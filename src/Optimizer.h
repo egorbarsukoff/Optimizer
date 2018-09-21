@@ -11,12 +11,20 @@
 #include "Point.h"
 #include "Function.h"
 
+template <size_t dim>
 class Optimizer {
-    Criterion crit;
+    const Criterion<dim>& crit;
     virtual void step() = 0;
 public:
-    explicit Optimizer(const Criterion& crit) : crit(crit) {}
-    Track optimize(Function f, Point start);
+    explicit Optimizer(const Criterion<dim>& crit) : crit(crit) {}
+    Track<dim> optimize(const Function<dim> &f, const Point<dim> &start) {
+        Track<dim> track;
+        track.push_back(start);
+        while (crit(track)) {
+            step();
+        }
+        return track;
+    }
 };
 
 

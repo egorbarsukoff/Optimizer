@@ -9,9 +9,10 @@
 #include <initializer_list>
 #include "Point.h"
 
+template <size_t n>
 class Criterion {
 public:
-    virtual bool operator() (const Track& track) = 0;
+    virtual bool operator() (const Track<n>& track) const = 0 ;
 };
 
 
