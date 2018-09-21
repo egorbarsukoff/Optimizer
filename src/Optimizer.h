@@ -6,8 +6,17 @@
 #define OPTIMIZER_OPTIMIZER_H
 
 
-class Optimizer {
+#include <vector>
+#include "Criterion.h"
+#include "Point.h"
+#include "Function.h"
 
+class Optimizer {
+    Criterion crit;
+    virtual void step() = 0;
+public:
+    explicit Optimizer(const Criterion& crit) : crit(crit) {}
+    Track optimize(Function f, Point start);
 };
 
 

@@ -3,3 +3,12 @@
 //
 
 #include "Optimizer.h"
+
+Track Optimizer::optimize(Function f, Point start) {
+    Track track;
+    track.push_back(start);
+    while (crit(track)) {
+        step();
+    }
+    return track;
+}

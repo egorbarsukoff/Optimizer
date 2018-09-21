@@ -5,9 +5,12 @@
 #ifndef OPTIMIZER_FUNCTION_H
 #define OPTIMIZER_FUNCTION_H
 
+#include <tuple>
 
 class Function {
-
+public:
+    template <typename... Args>
+    virtual double operator() (std::tuple<Args...>) = 0;
 };
 
 
