@@ -10,31 +10,58 @@
 #include <cstddef>
 #include <cassert>
 #include <algorithm>
+#include <functional>
 
 
-template <size_t n>
+template <size_t dim>
+class Point;
+
+template <size_t dim>
+Point<dim> pairWiseTransform(const Point<dim> &a, const Point<dim> &b, std::function<double(double, double)> f);
+
+
+
+template <size_t dim>
 class Point {
-    std::array<double, n> x;
+protected:
+    std::array<double, dim> x;
 public:
-    explicit Point(std::array<double, n> x) : x(std::move(x)) {};
+    explicit Point(std::array<double, dim> x) : x(std::move(x)) {};
     Point() : x() {};
     Point(const Point& p) : Point(p.x) {};
     Point(Point&& p) noexcept : Point(std::move(p.x)) {};
+    Point(size_t n) {
+        x[n] = 1;
+    }
     double operator[](size_t i) const {
         assert(i < x.size() && i >= 0);
         return x[i];
     }
+    Point operator*(double a) {
+        std::transform(x.begin(), x.end(), x.begin(), std::bind1st(std::multiplies<double>(), a));
+    }
 
-    template <size_t dim>
-    friend Point operator+(const Point<dim>& a, const Point<dim>& b);
+    template <size_t n>
+    friend Point<n> pairWiseTransform(const Point<n> &a, const Point<n> &b, std::function<double(double, double)> f);
 };
+
+
+template <size_t dim>
+Point<dim> pairWiseTransform(const Point<dim> &a, const Point<dim> &b, std::function<double(double, double)> f) {
+    assert(a.x.size() == b.x.size());
+    Point<dim> result(a.x);
+    std::transform(result.x.begin(), result.x.end(), b.x.cbegin(), result.x.begin(), f);
+    return result;
+}
 
 template <size_t dim>
 Point<dim> operator+(const Point<dim> &a, const Point<dim> &b) {
-    assert(a.x.size() == b.x.size());
-    Point<dim> result(a.x);
-    std::transform(result.x.begin(), result.x.end(), b.x.cbegin(), result.x.begin(), std::plus<>());
-    return result;
+    return pairWiseTransform<dim>(a, b, std::plus<double>());
+}
+
+template <size_t dim>
+Point<dim> operator-(const Point<dim> &a, const Point<dim> &b) {
+    return pairWiseTransform<dim>(a, b, std::minus<double>());
 }
 
 template <size_t n>
