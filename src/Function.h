@@ -21,11 +21,10 @@ public:
         } else
             throw "Out of bounds";
     }
-    virtual Gradient<dim> D(const Point<dim>& x);
 };
 
-class Rosenbrock : Function<2> {
-    virtual double compute(const Point<2>& x) {
+class Rosenbrock : public Function<2> {
+    virtual double compute(const Point<2>& x) override {
         return pow((1 - x[0]), 2) + 100 * pow((x[1] - pow(x[0], 2)), 2);
     }
 };
