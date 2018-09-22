@@ -32,14 +32,17 @@ public:
     //! \param x Массив координат точки
     explicit Point(std::array<double, dim> x) : x(std::move(x)) {};
     //! Конструктор нулевой точки
-    Point() : x() {};
+    Point() : x() {
+        for (auto& i : x)
+            i = 0;
+    };
     //! Конструктор копирования
     Point(const Point& p) : Point(p.x) {};
     //! Конструктор перемещения
     Point(Point&& p) noexcept : Point(std::move(p.x)) {};
     //! Создает точку со всеми нулевыми координатыми, кроме координаты n
     //! \param n
-    Point(size_t n) {
+    explicit Point(size_t n) : Point() {
         x[n] = 1;
     }
     //! Возращает массив координат точек
@@ -62,11 +65,11 @@ public:
         return x[i];
     }
     //! Умножение на скаляр
+    //! \tparam dim Размерность
     //! \param a Скаляр
     //! \return Резульат
-    Point operator*(double a) {
-        std::transform(x.begin(), x.end(), x.begin(), std::bind1st(std::multiplies<double>(), a));
-    }
+    template <size_t n>
+    friend Point<n> operator*(Point<n> p, double a);
 
     //! Применяет функцию f попарно к элементам Point
     //! \tparam n Размерность
@@ -109,9 +112,18 @@ Point<dim> operator+(const Point<dim> &a, const Point<dim> &b) {
 //! \param b Правый операнд
 //! \return Резульат
 template <size_t dim>
-template <size_t dim>
 Point<dim> operator-(const Point<dim> &a, const Point<dim> &b) {
     return pairWiseTransform<dim>(a, b, std::minus<double>());
+}
+
+//! Умножение на скаляр
+//! \tparam dim размерность
+//! \param a Скаляр
+//! \return Резульат
+template <size_t dim>
+Point<dim> operator*(Point<dim> p, double a) {
+    std::transform(p.x.begin(), p.x.end(), p.x.begin(), std::bind1st(std::multiplies<double>(), a));
+    return p;
 }
 
 

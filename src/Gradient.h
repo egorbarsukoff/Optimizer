@@ -22,7 +22,8 @@ class Gradient : public Point<dim>{
     //! \return Резульат
     double D(auto&& f) {
         double h = 0.01;
-        return (f(h) - f(-h)) / (2*h);
+        auto t = (f(h) - f(-h)) / (2*h);
+        return t;
     }
 public:
     //! Вычисление градиента
@@ -33,9 +34,6 @@ public:
             this->x[i] = D([&](double h) {
                 return f(p + Point<dim>(i)*h);
             });
-        }
-        for (auto a: Point<dim>::x) {
-            std::cout << a << std::endl;
         }
     }
 

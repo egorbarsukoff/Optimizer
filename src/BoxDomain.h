@@ -10,9 +10,10 @@
 
 
 //! @brief Область определения типа коробка
-//! \tparam dim РАзмерность
+//! \tparam dim Размерность
 template <size_t dim>
 class BoxDomain {
+    std::array<std::array<double, 2>, dim> bounds;
 public:
     //! Проверка, что точка находится внутри области определения
     //! \param p Проверяемая точка
