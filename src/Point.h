@@ -33,7 +33,16 @@ public:
     Point(size_t n) {
         x[n] = 1;
     }
+
+    const std::array<double, dim> &getX() const {
+        return x;
+    }
+
     double operator[](size_t i) const {
+        assert(i < x.size() && i >= 0);
+        return x[i];
+    }
+    double& operator[](size_t i) {
         assert(i < x.size() && i >= 0);
         return x[i];
     }

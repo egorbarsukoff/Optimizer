@@ -12,10 +12,11 @@
 
 template <size_t dim>
 class Function {
+protected:
     BoxDomain<dim> domain;
-    virtual double compute(const Point<dim>& x) = 0;
+    virtual double compute(const Point<dim>& x) const = 0;
 public:
-    double operator()(const Point<dim> &x) {
+    double operator()(const Point<dim> &x) const {
         if (domain.inDomain(x)) {
             return compute(x);
         } else
@@ -24,7 +25,7 @@ public:
 };
 
 class Rosenbrock : public Function<2> {
-    virtual double compute(const Point<2>& x) override {
+    double compute(const Point<2>& x) const override {
         return pow((1 - x[0]), 2) + 100 * pow((x[1] - pow(x[0], 2)), 2);
     }
 };

@@ -11,7 +11,9 @@
 template <size_t dim>
 class BoxDomain {
 public:
-    bool inDomain(const Point<dim>& p);
+    bool inDomain(const Point<dim>& p) const {
+        return true;
+    };
     BoxDomain<dim> intersect(const BoxDomain<dim>& d);
 };
 
