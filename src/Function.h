@@ -10,12 +10,22 @@
 #include "BoxDomain.h"
 #include "Gradient.h"
 
+
+//! @brief Класс абстрактной функции
+//! @tparam Размерность функции
 template <size_t dim>
 class Function {
 protected:
+    //! Область определения функции
     BoxDomain<dim> domain;
+    //! Вычиление абстрактной функции в точке
+    //! \param x Точка
+    //! \return Результат
     virtual double compute(const Point<dim>& x) const = 0;
 public:
+    //! Вызов вычисления функции
+    //! \param x Точка в которой вычисляется функция
+    //! \return Результат
     double operator()(const Point<dim> &x) const {
         if (domain.inDomain(x)) {
             return compute(x);
@@ -24,7 +34,12 @@ public:
     }
 };
 
+
+//! Функция Розенброка
 class Rosenbrock : public Function<2> {
+    //! Вычиление функции в точке
+    //! \param x Точка
+    //! \return Результат
     double compute(const Point<2>& x) const override {
         return pow((1 - x[0]), 2) + 100 * pow((x[1] - pow(x[0], 2)), 2);
     }

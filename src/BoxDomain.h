@@ -8,12 +8,21 @@
 
 #include "Point.h"
 
+
+//! @brief Область определения типа коробка
+//! \tparam dim РАзмерность
 template <size_t dim>
 class BoxDomain {
 public:
+    //! Проверка, что точка находится внутри области определения
+    //! \param p Проверяемая точка
+    //! \return Результат
     bool inDomain(const Point<dim>& p) const {
         return true;
     };
+    //! Пересечние двух областей определения
+    //! \param d Вторая область определения
+    //! \return Результат
     BoxDomain<dim> intersect(const BoxDomain<dim>& d);
 };
 

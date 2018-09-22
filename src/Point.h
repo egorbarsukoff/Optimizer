@@ -20,41 +20,70 @@ template <size_t dim>
 Point<dim> pairWiseTransform(const Point<dim> &a, const Point<dim> &b, std::function<double(double, double)> f);
 
 
-
+//! @brief Точка пространства
+//! \tparam dim Размерность пространства
 template <size_t dim>
 class Point {
 protected:
+    //! Хранит координаты точки
     std::array<double, dim> x;
 public:
+    //! Конструктор
+    //! \param x Массив координат точки
     explicit Point(std::array<double, dim> x) : x(std::move(x)) {};
+    //! Конструктор нулевой точки
     Point() : x() {};
+    //! Конструктор копирования
     Point(const Point& p) : Point(p.x) {};
+    //! Конструктор перемещения
     Point(Point&& p) noexcept : Point(std::move(p.x)) {};
+    //! Создает точку со всеми нулевыми координатыми, кроме координаты n
+    //! \param n
     Point(size_t n) {
         x[n] = 1;
     }
-
+    //! Возращает массив координат точек
+    //! \return
     const std::array<double, dim> &getX() const {
         return x;
     }
-
+    //! Возращает константное значение i-ой координаты
+    //! \param i
+    //! \return
     double operator[](size_t i) const {
         assert(i < x.size() && i >= 0);
         return x[i];
     }
+    //! Возращает неконстантное значение i-ой координаты
+    //! \param i
+    //! \return
     double& operator[](size_t i) {
         assert(i < x.size() && i >= 0);
         return x[i];
     }
+    //! Умножение на скаляр
+    //! \param a Скаляр
+    //! \return Резульат
     Point operator*(double a) {
         std::transform(x.begin(), x.end(), x.begin(), std::bind1st(std::multiplies<double>(), a));
     }
 
+    //! Применяет функцию f попарно к элементам Point
+    //! \tparam n Размерность
+    //! \param a Первая Point
+    //! \param b Вторая Point
+    //! \param f Функция, которую надо пременить
+    //! \return Результат
     template <size_t n>
     friend Point<n> pairWiseTransform(const Point<n> &a, const Point<n> &b, std::function<double(double, double)> f);
 };
 
-
+//! @brief Применяет функцию f попарно к элементам Point
+//! \tparam n Размерность
+//! \param a Первая Point
+//! \param b Вторая Point
+//! \param f Функция, которую надо пременить
+//! \return Результат
 template <size_t dim>
 Point<dim> pairWiseTransform(const Point<dim> &a, const Point<dim> &b, std::function<double(double, double)> f) {
     assert(a.x.size() == b.x.size());
@@ -63,15 +92,28 @@ Point<dim> pairWiseTransform(const Point<dim> &a, const Point<dim> &b, std::func
     return result;
 }
 
+
+//! Попарное сложение двух Point
+//! \tparam dim Размерность
+//! \param a Левый операнд
+//! \param b Правый операнд
+//! \return Резульат
 template <size_t dim>
 Point<dim> operator+(const Point<dim> &a, const Point<dim> &b) {
     return pairWiseTransform<dim>(a, b, std::plus<double>());
 }
 
+//! Попарное вычитание двух Point
+//! \tparam dim Размерность
+//! \param a Левый операнд
+//! \param b Правый операнд
+//! \return Резульат
+template <size_t dim>
 template <size_t dim>
 Point<dim> operator-(const Point<dim> &a, const Point<dim> &b) {
     return pairWiseTransform<dim>(a, b, std::minus<double>());
 }
+
 
 template <size_t n>
 using Track = std::vector<Point<n>>;
