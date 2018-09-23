@@ -7,6 +7,7 @@
 
 
 #include "Point.h"
+#include "CommonRandom.h"
 
 
 //! @brief Область определения типа коробка
@@ -23,6 +24,7 @@ public:
                 throw "Bad bounds";
         }
     }
+
     //! Конструктор окрестности
     //! \param p Центр окрестности
     //! \param eps Размер окрестности
@@ -31,12 +33,23 @@ public:
             std::tie(bounds[i][0], bounds[i][1]) = std::tie(p[i] - eps, p[i] + eps);
         }
     }
+
     //! Проверка, что точка находится внутри области определения
     //! \param p Проверяемая точка
     //! \return Результат
     bool inDomain(const Point<dim>& p) const {
         return true;
     }
+
+    //! Случайная Point в области определения
+    //! \return
+    Point<dim> randomPoint() {
+        Point<dim> p;
+        for (size_t i = 0; i < dim; ++i) {
+            p[i] = CommonRandom::getU(bounds[i][0], bounds[i][1]);
+        }
+    }
+
     //! Пересечние двух областей определения
     //! \param d Вторая область определения
     //! \return Результат
