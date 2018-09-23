@@ -22,7 +22,7 @@ class Gradient : public Point<dim>{
     //! Вычисление производной одномерной функции в точке 0
     //! \param f Одномерная функция
     //! \return Резульат
-    double D(auto&& f) {
+    static double D(auto&& f) {
         double h = 0.01;
         auto t = (f(h) - f(-h)) / (2*h);
         return t;
