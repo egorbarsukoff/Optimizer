@@ -26,6 +26,12 @@ protected:
     virtual double compute(const Point<dim>& x) const = 0;
 public:
 
+    //! Возвращает область определения
+    //! \return
+    const BoxDomain<dim> &getDomain() const {
+        return domain;
+    }
+
     //! Вызов вычисления функции
     //! \param x Точка в которой вычисляется функция
     //! \return Результат

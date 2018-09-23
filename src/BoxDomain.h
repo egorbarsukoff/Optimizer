@@ -50,6 +50,16 @@ public:
         }
     }
 
+    //! Мера Лебега области
+    //! \return
+    double measure() {
+        double res = 1;
+        for (int i = 0; i < dim; ++i) {
+            res *= bounds[i][1] - bounds[i][0];
+        }
+        return res;
+    }
+
     //! Пересечние двух областей определения
     //! \param d Вторая область определения
     //! \return Результат

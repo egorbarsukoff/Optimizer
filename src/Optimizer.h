@@ -16,6 +16,10 @@
 //! \tparam dim
 template <size_t dim>
 class Optimizer {
+    //! Пройденные точки
+    Track<dim> track;
+
+    const Function<dim>& f;
 
     //! Критерий остановки
     const Criterion<dim>& crit;
@@ -26,19 +30,19 @@ public:
 
     //! Конструктор класса
     //! \param crit Кртерий остановки
-    explicit Optimizer(const Criterion<dim>& crit) : crit(crit) {}
+    explicit Optimizer(const Function<dim> &f, const Criterion<dim>& crit) : f(f), crit(crit) {}
 
     //! Старт оптимизации
     //! \param f Функция, которая будет оптимизироваться
     //! \param start Начальная точка
     //! \return Путь оптимизатора
-    Track<dim> optimize(const Function<dim> &f, const Point<dim> &start) {
-        Track<dim> track;
+    Track<dim> optimize(const Point<dim> &start) {
+        track = Track<dim>();
         track.push_back(start);
         while (crit(track)) {
-            step();
+            step(track.back());
         }
-        return track;
+        return track.back();
     }
 };
 
