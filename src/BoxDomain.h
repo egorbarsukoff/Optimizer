@@ -78,6 +78,7 @@ BoxDomain<n> operator*(const BoxDomain<n>& a, const BoxDomain<n>& b) {
         new_box[i][1] = std::min(a.bounds[i][1], b.bounds[i][1]);
         assert(new_box[i][0] < new_box[i][1]);
     }
+    return BoxDomain<n>(new_box);
 }
 
 #endif //OPTIMIZER_DOMAIN_H

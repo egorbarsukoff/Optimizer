@@ -15,15 +15,22 @@
 //! \tparam dim Размерность
 template <size_t dim>
 class RandomSearch : public Optimizer<dim> {
+
+    //! Вероятность, что точка будет выбираться из всего множества, а не из окрестности
     double p;
+
+    //! Радиус окрестности
     double delta;
+
+    //! Шаг оптимизатора
     void step() {
         Point<dim> new_point;
         while (true) {
             if (CommonRandom::getB(p))
                 new_point = Optimizer<dim>::f.getDomain().randomPoint();
             else
-                new_point = (BoxDomain<dim>(Optimizer<dim>::track.back(), delta) *
+                new_point = (BoxDomain<dim>(Optimizer<dim>::track.back(),
+                                       delta/double(Optimizer<dim>::track.size())) *
                                        Optimizer<dim>::f.getDomain()).randomPoint();
             if (Optimizer<dim>::f(new_point) < Optimizer<dim>::f(Optimizer<dim>::track.back())) {
                 Optimizer<dim>::track.push_back(new_point);
@@ -32,7 +39,12 @@ class RandomSearch : public Optimizer<dim> {
         }
     }
 public:
-    RandomSearch(const Function<dim>& f, std::vector<Criterion<dim>*>& crits, double h = 0.05, double p = 0.2) :
+    //!
+    //! \param f
+    //! \param crits Критерий остановки
+    //! \param h Размер окрестности
+    //! \param p Вероятность выбора точки не из окрестности
+    RandomSearch(const Function<dim>& f, std::vector<Criterion<dim>*>& crits, double h = 0.05, double p = 0.1) :
                     Optimizer<dim>(f, crits), p(p) {
         delta = pow(Optimizer<dim>::f.getDomain().measure(), 1./dim)*h;
     }

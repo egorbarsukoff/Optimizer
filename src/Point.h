@@ -58,11 +58,17 @@ public:
         return x;
     }
 
+    //! Оператор копирования
+    //! \param b
+    //! \return
     Point<dim>& operator=(const Point<dim>& b) {
         x = x.b;
         return *this;
     }
 
+    //! Оператор перемещения
+    //! \param b
+    //! \return
     Point<dim>& operator=(Point<dim>&& b) noexcept {
         x = std::move(b.x);
         return *this;

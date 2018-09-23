@@ -32,10 +32,9 @@ public:
     //! \param p
     //! \return
     static bool getB(double p) {
-        assert(p < 1);
+        assert(p <= 1 && p >= 0);
         return CommonRandom::getU(0, 1) < p;
-    }
-};
+    }};
 
 
 #endif //OPTIMIZER_COMMONRANDOM_H
