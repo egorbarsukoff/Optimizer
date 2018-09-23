@@ -15,8 +15,10 @@
 //! \tparam dim Размерность
 template <size_t dim>
 class Gradient : public Point<dim>{
+
     //! Точка, в которой был вычиллен градиаент
     const Point<dim>& from;
+
     //! Вычисление производной одномерной функции в точке 0
     //! \param f Одномерная функция
     //! \return Резульат
@@ -26,6 +28,7 @@ class Gradient : public Point<dim>{
         return t;
     }
 public:
+
     //! Вычисление градиента
     //! \param f Функция
     //! \param p Точка, в которой будет вычисляться градиент

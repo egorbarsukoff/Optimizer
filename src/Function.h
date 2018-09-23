@@ -16,13 +16,16 @@
 template <size_t dim>
 class Function {
 protected:
+
     //! Область определения функции
     BoxDomain<dim> domain;
+
     //! Вычиление абстрактной функции в точке
     //! \param x Точка
     //! \return Результат
     virtual double compute(const Point<dim>& x) const = 0;
 public:
+
     //! Вызов вычисления функции
     //! \param x Точка в которой вычисляется функция
     //! \return Результат
@@ -37,6 +40,7 @@ public:
 
 //! Функция Розенброка
 class Rosenbrock : public Function<2> {
+
     //! Вычиление функции в точке
     //! \param x Точка
     //! \return Результат

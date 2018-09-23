@@ -16,14 +16,18 @@
 //! \tparam dim
 template <size_t dim>
 class Optimizer {
+
     //! Критерий остановки
     const Criterion<dim>& crit;
+
     //! Абстрактный шаг оптимизатора
     virtual void step() = 0;
 public:
+
     //! Конструктор класса
     //! \param crit Кртерий остановки
     explicit Optimizer(const Criterion<dim>& crit) : crit(crit) {}
+
     //! Старт оптимизации
     //! \param f Функция, которая будет оптимизироваться
     //! \param start Начальная точка

@@ -25,31 +25,39 @@ Point<dim> pairWiseTransform(const Point<dim> &a, const Point<dim> &b, std::func
 template <size_t dim>
 class Point {
 protected:
+
     //! Хранит координаты точки
     std::array<double, dim> x;
 public:
+
     //! Конструктор
     //! \param x Массив координат точки
     explicit Point(std::array<double, dim> x) : x(std::move(x)) {};
+
     //! Конструктор нулевой точки
     Point() : x() {
         for (auto& i : x)
             i = 0;
     };
+
     //! Конструктор копирования
     Point(const Point& p) : Point(p.x) {};
+
     //! Конструктор перемещения
     Point(Point&& p) noexcept : Point(std::move(p.x)) {};
+
     //! Создает точку со всеми нулевыми координатыми, кроме координаты n
     //! \param n
     explicit Point(size_t n) : Point() {
         x[n] = 1;
     }
+
     //! Возращает массив координат точек
     //! \return
     const std::array<double, dim> &getX() const {
         return x;
     }
+
     //! Возращает константное значение i-ой координаты
     //! \param i
     //! \return
@@ -57,6 +65,7 @@ public:
         assert(i < x.size() && i >= 0);
         return x[i];
     }
+
     //! Возращает неконстантное значение i-ой координаты
     //! \param i
     //! \return
@@ -64,6 +73,7 @@ public:
         assert(i < x.size() && i >= 0);
         return x[i];
     }
+
     //! Умножение на скаляр
     //! \tparam dim Размерность
     //! \param a Скаляр

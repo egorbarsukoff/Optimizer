@@ -15,6 +15,7 @@
 template <size_t n>
 class Criterion {
 public:
+
     //! Проверка абстрактного критерия
     //! \param track Путь оптимизатора
     //! \return Выполнен критерий или нет
