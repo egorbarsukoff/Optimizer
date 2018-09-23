@@ -79,14 +79,17 @@ public:
     //! \return Результат
     template <size_t n>
     friend Point<n> pairWiseTransform(const Point<n> &a, const Point<n> &b, std::function<double(double, double)> f);
+
+    //! Вывод координат в круглых скобочках
+    //! \tparam n Размерность
+    //! \param o Поток вывода
+    //! \param p Точка, которую необходимо вывести
+    //! \return Измененный поток вывода
+    template <size_t n>
+    friend std::ostream& operator<<(std::ostream& o, const Point<n>& p);
 };
 
-//! @brief Применяет функцию f попарно к элементам Point
-//! \tparam n Размерность
-//! \param a Первая Point
-//! \param b Вторая Point
-//! \param f Функция, которую надо пременить
-//! \return Результат
+
 template <size_t dim>
 Point<dim> pairWiseTransform(const Point<dim> &a, const Point<dim> &b, std::function<double(double, double)> f) {
     assert(a.x.size() == b.x.size());
@@ -95,35 +98,30 @@ Point<dim> pairWiseTransform(const Point<dim> &a, const Point<dim> &b, std::func
     return result;
 }
 
-
-//! Попарное сложение двух Point
-//! \tparam dim Размерность
-//! \param a Левый операнд
-//! \param b Правый операнд
-//! \return Резульат
 template <size_t dim>
 Point<dim> operator+(const Point<dim> &a, const Point<dim> &b) {
     return pairWiseTransform<dim>(a, b, std::plus<double>());
 }
 
-//! Попарное вычитание двух Point
-//! \tparam dim Размерность
-//! \param a Левый операнд
-//! \param b Правый операнд
-//! \return Резульат
 template <size_t dim>
 Point<dim> operator-(const Point<dim> &a, const Point<dim> &b) {
     return pairWiseTransform<dim>(a, b, std::minus<double>());
 }
 
-//! Умножение на скаляр
-//! \tparam dim размерность
-//! \param a Скаляр
-//! \return Резульат
+
 template <size_t dim>
 Point<dim> operator*(Point<dim> p, double a) {
     std::transform(p.x.begin(), p.x.end(), p.x.begin(), std::bind1st(std::multiplies<double>(), a));
     return p;
+}
+
+template <size_t n>
+std::ostream& operator<<(std::ostream& o, const Point<n>& p) {
+    o << "( ";
+    for (auto x : p.x) {
+        o << x << " ";
+    }
+    o << ")";
 }
 
 
