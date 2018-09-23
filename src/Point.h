@@ -58,6 +58,16 @@ public:
         return x;
     }
 
+    Point<dim>& operator=(const Point<dim>& b) {
+        x = x.b;
+        return *this;
+    }
+
+    Point<dim>& operator=(Point<dim>&& b) noexcept {
+        x = std::move(b.x);
+        return *this;
+    }
+
     //! Возращает константное значение i-ой координаты
     //! \param i
     //! \return

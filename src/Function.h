@@ -25,7 +25,7 @@ protected:
     //! \return Результат
     virtual double compute(const Point<dim>& x) const = 0;
 public:
-
+    Function (const BoxDomain<dim>& domain) : domain(domain) {}
     //! Возвращает область определения
     //! \return
     const BoxDomain<dim> &getDomain() const {
@@ -53,6 +53,10 @@ class Rosenbrock : public Function<2> {
     double compute(const Point<2>& x) const override {
         return pow((1 - x[0]), 2) + 100 * pow((x[1] - pow(x[0], 2)), 2);
     }
+
+public:
+
+    Rosenbrock(const BoxDomain<2> domain) : Function(domain) {}
 };
 
 

@@ -30,7 +30,8 @@ public:
     //! \param eps Размер окрестности
     BoxDomain<dim> (Point<dim> p, double eps) {
         for (size_t i = 0; i < dim; ++i) {
-            std::tie(bounds[i][0], bounds[i][1]) = std::tie(p[i] - eps, p[i] + eps);
+            bounds[i][0] = p[i] - eps;
+            bounds[i][1] = p[i] + eps;
         }
     }
 
@@ -43,16 +44,17 @@ public:
 
     //! Случайная Point в области определения
     //! \return
-    Point<dim> randomPoint() {
+    Point<dim> randomPoint() const {
         Point<dim> p;
         for (size_t i = 0; i < dim; ++i) {
             p[i] = CommonRandom::getU(bounds[i][0], bounds[i][1]);
         }
+        return p;
     }
 
     //! Мера Лебега области
     //! \return
-    double measure() {
+    double measure() const {
         double res = 1;
         for (int i = 0; i < dim; ++i) {
             res *= bounds[i][1] - bounds[i][0];
@@ -72,7 +74,9 @@ template <size_t n>
 BoxDomain<n> operator*(const BoxDomain<n>& a, const BoxDomain<n>& b) {
     std::array<std::array<double, 2>, n> new_box;
     for (size_t i = 0; i < n; ++i) {
-        std::tie(new_box[i][0], new_box[i][1]) = std::tie(std::min(a[i][0], b[i][0]), std::max(a[i][1], b[i][1]));
+        new_box[i][0] = std::max(a.bounds[i][0], b.bounds[i][0]);
+        new_box[i][1] = std::min(a.bounds[i][1], b.bounds[i][1]);
+        assert(new_box[i][0] < new_box[i][1]);
     }
 }
 

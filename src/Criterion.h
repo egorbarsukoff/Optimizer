@@ -23,4 +23,15 @@ public:
 };
 
 
+template <size_t n>
+class MaxN : public Criterion<n>{
+    size_t maxN;
+public:
+    explicit MaxN(size_t maxN) : Criterion<n>(), maxN(maxN) {}
+    bool operator() (const Track<n>& track) const {
+        return track.size() < maxN;
+    }
+};
+
+
 #endif //OPTIMIZER_CRITERION_H
