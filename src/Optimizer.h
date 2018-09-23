@@ -23,24 +23,16 @@ protected:
     const Function<dim>& f;
 
     //! Критерий остановки
-    const std::vector<Criterion<dim>*>& crits;
+    const Criterion<dim>& crit;
 
     //! Абстрактный шаг оптимизатора
     virtual void step() = 0;
 
-    bool checkCrits() {
-        bool ok = true;
-        for (auto it = 0; it < crits.size() && ok; ++it) {
-            if (!(*crits[it])(track))
-                ok = false;
-        }
-        return ok;
-    }
 public:
 
     //! Конструктор класса
     //! \param crit Кртерий остановки
-    explicit Optimizer(const Function<dim> &f, std::vector<Criterion<dim>*>& crits) : f(f), crits(crits) {}
+    explicit Optimizer(const Function<dim> &f, const Criterion<dim>& crit) : f(f), crit(crit) {}
 
     //! Старт оптимизации
     //! \param f Функция, которая будет оптимизироваться
@@ -49,7 +41,7 @@ public:
     Track<dim> optimize(const Point<dim> &start) {
         track = Track<dim>();
         track.push_back(start);
-        while (checkCrits()) {
+        while (crit(track)) {
             step();
         }
         return track;

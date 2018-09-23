@@ -30,7 +30,7 @@ class RandomSearch : public Optimizer<dim> {
                 new_point = Optimizer<dim>::f.getDomain().randomPoint();
             else
                 new_point = (BoxDomain<dim>(Optimizer<dim>::track.back(),
-                                       delta/double(Optimizer<dim>::track.size())) *
+                                       delta/sqrt(double(Optimizer<dim>::track.size()))) *
                                        Optimizer<dim>::f.getDomain()).randomPoint();
             if (Optimizer<dim>::f(new_point) < Optimizer<dim>::f(Optimizer<dim>::track.back())) {
                 Optimizer<dim>::track.push_back(new_point);
@@ -44,8 +44,8 @@ public:
     //! \param crits Критерий остановки
     //! \param h Размер окрестности
     //! \param p Вероятность выбора точки не из окрестности
-    RandomSearch(const Function<dim>& f, std::vector<Criterion<dim>*>& crits, double h = 0.05, double p = 0.1) :
-                    Optimizer<dim>(f, crits), p(p) {
+    RandomSearch(const Function<dim>& f, const Criterion<dim>& crit, double h = 0.05, double p = 0.8) :
+                    Optimizer<dim>(f, crit), p(p) {
         delta = pow(Optimizer<dim>::f.getDomain().measure(), 1./dim)*h;
     }
 };
