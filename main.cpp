@@ -8,7 +8,7 @@
 int main() {
     BoxDomain<2> box({{{-5, 5}, {-5, 5}}});
     Rosenbrock f(box);
-    Point<2> start(std::array<double, 2>({-2, -2}));
+    Point<2> start(std::array<double, 2>({0, 0}));
     MaxN<2> crit(40);
     auto crits = CriterionPack<2>({&crit});
     RandomSearch<2> search(f, crit);

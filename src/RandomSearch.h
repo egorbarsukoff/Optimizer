@@ -25,17 +25,15 @@ class RandomSearch : public Optimizer<dim> {
     //! Шаг оптимизатора
     void step() {
         Point<dim> new_point;
-        while (true) {
-            if (CommonRandom::getB(p))
-                new_point = Optimizer<dim>::f.getDomain().randomPoint();
-            else
-                new_point = (BoxDomain<dim>(Optimizer<dim>::track.back(),
-                                       delta/sqrt(double(Optimizer<dim>::track.size()))) *
-                                       Optimizer<dim>::f.getDomain()).randomPoint();
-            if (Optimizer<dim>::f(new_point) < Optimizer<dim>::f(Optimizer<dim>::track.back())) {
-                Optimizer<dim>::track.push_back(new_point);
-                return;
-            }
+        if (CommonRandom::getB(p))
+            new_point = Optimizer<dim>::f.getDomain().randomPoint();
+        else
+            new_point = (BoxDomain<dim>(Optimizer<dim>::track.back(),
+                                   delta/sqrt(double(Optimizer<dim>::track.size()))) *
+                                   Optimizer<dim>::f.getDomain()).randomPoint();
+        if (Optimizer<dim>::f(new_point) < Optimizer<dim>::f(Optimizer<dim>::track.back())) {
+            Optimizer<dim>::track.push_back(new_point);
+            return;
         }
     }
 public:
