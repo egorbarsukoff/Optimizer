@@ -39,6 +39,10 @@ public:
     //! \param p Проверяемая точка
     //! \return Результат
     bool inDomain(const Point<dim>& p) const {
+        for (int i = 0; i < dim; ++i) {
+            if (bounds[i][0] > p[i] || bounds[i][1] < p[i])
+                return false;
+        }
         return true;
     }
 
