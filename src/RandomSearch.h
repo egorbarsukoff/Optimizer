@@ -42,7 +42,7 @@ public:
     //! \param crits Критерий остановки
     //! \param h Размер окрестности
     //! \param p Вероятность выбора точки не из окрестности
-    RandomSearch(const Function<dim>& f, const Criterion<dim>& crit, double h = 0.05, double p = 0.8) :
+    RandomSearch(const Function<dim>& f, Criterion<dim>& crit, double h = 0.1, double p = 0.5) :
                     Optimizer<dim>(f, crit), p(p) {
         delta = pow(Optimizer<dim>::f.getDomain().measure(), 1./dim)*h;
     }

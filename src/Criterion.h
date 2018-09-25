@@ -19,7 +19,7 @@ public:
     //! Проверка абстрактного критерия
     //! \param track Путь оптимизатора
     //! \return Выполнен критерий или нет
-    virtual bool operator() (const Track<dim>& track, size_t n) const = 0 ;
+    virtual bool operator() (const Track<dim>& track, size_t n) = 0 ;
 };
 
 
@@ -39,7 +39,7 @@ public:
     //! Проверка критериев
     //! \param track
     //! \return Выполнены ли все критерии
-    bool operator() (const Track<dim>& track, size_t n) const {
+    bool operator() (const Track<dim>& track, size_t n) {
         bool ans = true;
         for (auto it = pack.begin(); it != pack.end() && ans; ++it) {
             ans = (**it)(track, n) && ans;
@@ -67,13 +67,30 @@ public:
     //! Проверка критерия
     //! \param track
     //! \return Выполнен ли критерий
-    bool operator() (const Track<dim>& track, size_t n) const {
+    bool operator() (const Track<dim>& track, size_t n) {
         return track.size() < maxN;
     }
 };
 
+//! @brief Максимальное количество итераций без обновления (для RandomSearch)
+//! \tparam dim Размерность
+template <size_t dim>
+class NWithoutUpdates : public Criterion<dim> {
+    size_t n;
+    size_t counter;
+    size_t last_len;
 
-
+public:
+    explicit NWithoutUpdates(size_t n) : Criterion<dim>(), n(n), counter(0), last_len(0) {}
+    bool operator() (const Track<dim>& track, size_t nIt) {
+        if (track.size() != last_len) {
+            last_len = track.size();
+            counter = 0;
+        } else
+            ++counter;
+        return counter < n;
+    }
+};
 
 
 #endif //OPTIMIZER_CRITERION_H

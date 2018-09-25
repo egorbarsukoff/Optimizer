@@ -29,7 +29,7 @@ protected:
     const Function<dim>& f;
 
     //! Критерий остановки
-    const Criterion<dim>& crit;
+    Criterion<dim>& crit;
 
     //! Абстрактный шаг оптимизатора
     virtual void step() = 0;
@@ -37,7 +37,7 @@ protected:
 public:
     //! Конструктор класса
     //! \param crit Кртерий остановки
-    explicit Optimizer(const Function<dim> &f, const Criterion<dim>& crit) : f(f), crit(crit), n(0) {}
+    explicit Optimizer(const Function<dim> &f, Criterion<dim>& crit) : f(f), crit(crit), n(0) {}
 
     //! Старт оптимизации
     //! \param f Функция, которая будет оптимизироваться

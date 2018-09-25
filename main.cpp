@@ -8,11 +8,13 @@
 int main() {
     BoxDomain<2> box({{{-5, 5}, {-5, 5}}});
     Rosenbrock f(box);
-    Point<2> start(std::array<double, 2>({0, 0}));
-    MaxN<2> crit(40);
-    auto crits = CriterionPack<2>({&crit});
-    RandomSearch<2> search(f, crit);
+    Point<2> start(std::array<double, 2>({50, 50}));
+    MaxN<2> crit(100);
+    NWithoutUpdates<2> crit2(10000);
+    auto crits = CriterionPack<2>({&crit, &crit2});
+    RandomSearch<2> search(f, crits);
     auto ans = search.optimize(start);
+
     for (auto& a : ans) {
         std::cout << a << " " << f(a) << std::endl;
     }
