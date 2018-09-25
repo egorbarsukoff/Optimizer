@@ -92,5 +92,37 @@ public:
     }
 };
 
+//! @brief Критерий (f_{i-1} - f_i)/f_i < eps$
+//! \tparam dim размерность
+template <size_t dim>
+class FunctionChange : public Criterion<dim> {
+    double eps;
+public:
+    explicit FunctionChange(double eps): eps(eps) {}
+    bool operator() (const Track<dim>& track, size_t nIt) {
+        if (track.size() != 1 && (track[track.size() - 2].second -
+            track[track.size() - 1].second)/track[track.size() - 1].second < eps)
+            return false;
+        return true;
+    }
+};
+
+
+//! @brief Критерий нормы градиента
+//! \tparam dim Размерность
+template <size_t dim>
+class GrdientCriterion : public Criterion<dim> {
+    double eps;
+public:
+    explicit GrdientCriterion(double eps): eps(eps) {}
+    bool operator() (const Track<dim>& track, size_t nIt) {
+        if (track.back().first.norm() < eps)
+            return false;
+        return true;
+    }
+};
+
+
+
 
 #endif //OPTIMIZER_CRITERION_H
