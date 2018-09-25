@@ -11,6 +11,8 @@
 #include <cassert>
 #include <algorithm>
 #include <functional>
+#include <numeric>
+#include <cmath>
 
 
 template <size_t dim>
@@ -56,6 +58,16 @@ public:
     //! \return
     const std::array<double, dim> &getX() const {
         return x;
+    }
+
+
+    //!  Эвклидова норма вектора
+    //! \return норма
+    double norm() const {
+        double sum = 0;
+        for (double i : x)
+            sum += i*i;
+        return pow(sum, 1./2);
     }
 
     //! Оператор копирования
