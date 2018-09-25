@@ -28,12 +28,12 @@ class RandomSearch : public Optimizer<dim> {
         if (CommonRandom::getB(p))
             new_point = Optimizer<dim>::f.getDomain().randomPoint();
         else
-            new_point = (BoxDomain<dim>(Optimizer<dim>::track.back(),
+            new_point = (BoxDomain<dim>(Optimizer<dim>::track.back().first,
                                    delta/sqrt(double(Optimizer<dim>::track.size()))) *
                                    Optimizer<dim>::f.getDomain()).randomPoint();
-        if (Optimizer<dim>::f(new_point) < Optimizer<dim>::f(Optimizer<dim>::track.back())) {
-            Optimizer<dim>::track.push_back(new_point);
-            return;
+        double t;
+        if ((t = Optimizer<dim>::f(new_point)) < Optimizer<dim>::f(Optimizer<dim>::track.back().first)) {
+            Optimizer<dim>::track.emplace_back(new_point, t);
         }
     }
 public:

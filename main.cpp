@@ -6,9 +6,9 @@
 #include "src/RandomSearch.h"
 
 int main() {
-    BoxDomain<2> box({{{-5, 5}, {-5, 5}}});
+    BoxDomain<2> box({{{-1, 1}, {-1, 1}}});
     Rosenbrock f(box);
-    Point<2> start(std::array<double, 2>({50, 50}));
+    Point<2> start(std::array<double, 2>({0, 0}));
     MaxN<2> crit(100);
     NWithoutUpdates<2> crit2(10000);
     auto crits = CriterionPack<2>({&crit, &crit2});
@@ -16,7 +16,7 @@ int main() {
     auto ans = search.optimize(start);
 
     for (auto& a : ans) {
-        std::cout << a << " " << f(a) << std::endl;
+        std::cout << a.first << " " << a.second << std::endl;
     }
     return 0;
 }

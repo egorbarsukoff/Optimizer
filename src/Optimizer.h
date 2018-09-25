@@ -45,7 +45,7 @@ public:
     //! \return Путь оптимизатора
     Track<dim> optimize(const Point<dim> &start) {
         track = Track<dim>();
-        track.push_back(start);
+        track.emplace_back(start, f(start));
         while (crit(track, n)) {
             step();
             ++n;

@@ -152,7 +152,7 @@ std::ostream& operator<<(std::ostream& o, const Point<n>& p) {
 
 
 template <size_t n>
-using Track = std::vector<Point<n>>;
+using Track = std::vector<std::pair<Point<n>, double >>;
 
 
 #endif //OPTIMIZER_POINT_H
