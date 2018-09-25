@@ -11,8 +11,9 @@ int main() {
     Point<2> start(std::array<double, 2>({0, 0}));
     MaxN<2> crit(100);
     NWithoutUpdates<2> crit2(10000);
+    FunctionChange<2> crit3(0.0001);
     auto crits = CriterionPack<2>({&crit, &crit2});
-    RandomSearch<2> search(f, crits);
+    RandomSearch<2> search(f, crit3);
     auto ans = search.optimize(start);
 
     for (auto& a : ans) {
