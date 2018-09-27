@@ -8,7 +8,7 @@
 
 #include <vector>
 #include "Criterion.h"
-#include "Point.h"
+#include "Vector.h"
 #include "Function.h"
 
 
@@ -43,7 +43,7 @@ public:
     //! \param f Функция, которая будет оптимизироваться
     //! \param start Начальная точка
     //! \return Путь оптимизатора
-    Track<dim> optimize(const Point<dim> &start) {
+    Track<dim> optimize(const Vector<dim> &start) {
         track = Track<dim>();
         track.emplace_back(start, f(start));
         while (crit(track, n)) {

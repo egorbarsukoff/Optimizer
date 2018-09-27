@@ -7,7 +7,7 @@
 
 
 #include <initializer_list>
-#include "Point.h"
+#include "Vector.h"
 
 
 //! @brief Абстрактный критерий остановки

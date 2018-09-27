@@ -6,7 +6,7 @@
 #define OPTIMIZER_FUNCTION_H
 
 #include <cmath>
-#include "Point.h"
+#include "Vector.h"
 #include "BoxDomain.h"
 #include "Gradient.h"
 
@@ -23,7 +23,7 @@ protected:
     //! Вычиление абстрактной функции в точке
     //! \param x Точка
     //! \return Результат
-    virtual double compute(const Point<dim>& x) const = 0;
+    virtual double compute(const Vector<dim>& x) const = 0;
 public:
     Function (const BoxDomain<dim>& domain) : domain(domain) {}
     //! Возвращает область определения
@@ -35,7 +35,7 @@ public:
     //! Вызов вычисления функции
     //! \param x Точка в которой вычисляется функция
     //! \return Результат
-    double operator()(const Point<dim> &x) const {
+    double operator()(const Vector<dim> &x) const {
         if (domain.inDomain(x)) {
             return compute(x);
         } else
@@ -50,7 +50,7 @@ class Rosenbrock : public Function<2> {
     //! Вычиление функции в точке
     //! \param x Точка
     //! \return Результат
-    double compute(const Point<2>& x) const override {
+    double compute(const Vector<2>& x) const override {
         return pow((1 - x[0]), 2) + 100 * pow((x[1] - pow(x[0], 2)), 2);
     }
 

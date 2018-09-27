@@ -7,20 +7,20 @@
 
 #include <cstddef>
 #include "Optimizer.h"
-#include "Point.h"
+#include "Vector.h"
 
 
 template <size_t dim>
 class PolakRibiere : public Optimizer<dim> {
     class alphaFunction : public Function<1> {
         const Function<dim>& f;
-        const Point<dim>& p;
-        const Point<dim>& x;
+        const Vector<dim>& p;
+        const Vector<dim>& x;
 
     public:
-        alphaFunction(const Function<dim>& f, const Point<dim>&p, const Point<dim>&x) : Function(Limits(f, p, x)),
+        alphaFunction(const Function<dim>& f, const Vector<dim>&p, const Vector<dim>&x) : Function(Limits(f, p, x)),
                                                                                         f(f), p(p), x(x) {}
-        double operator() (const Point<1>& alpha) {
+        double operator() (const Vector<1>& alpha) {
             return f(x + p*alpha);
         }
     };
@@ -29,7 +29,7 @@ class PolakRibiere : public Optimizer<dim> {
 
     };
 
-    Point<dim> p;
+    Vector<dim> p;
     void step() {
 
     }

@@ -6,7 +6,7 @@
 #define OPTIMIZER_DOMAIN_H
 
 
-#include "Point.h"
+#include "Vector.h"
 #include "CommonRandom.h"
 
 
@@ -28,7 +28,7 @@ public:
     //! Конструктор окрестности
     //! \param p Центр окрестности
     //! \param eps Размер окрестности
-    BoxDomain<dim> (Point<dim> p, double eps) {
+    BoxDomain<dim> (Vector<dim> p, double eps) {
         for (size_t i = 0; i < dim; ++i) {
             bounds[i][0] = p[i] - eps;
             bounds[i][1] = p[i] + eps;
@@ -38,7 +38,7 @@ public:
     //! Проверка, что точка находится внутри области определения
     //! \param p Проверяемая точка
     //! \return Результат
-    bool inDomain(const Point<dim>& p) const {
+    bool inDomain(const Vector<dim>& p) const {
         for (int i = 0; i < dim; ++i) {
             if (bounds[i][0] > p[i] || bounds[i][1] < p[i])
                 return false;
@@ -48,8 +48,8 @@ public:
 
     //! Случайная Point в области определения
     //! \return
-    Point<dim> randomPoint() const {
-        Point<dim> p;
+    Vector<dim> randomPoint() const {
+        Vector<dim> p;
         for (size_t i = 0; i < dim; ++i) {
             p[i] = CommonRandom::getU(bounds[i][0], bounds[i][1]);
         }
