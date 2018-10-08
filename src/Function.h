@@ -39,7 +39,7 @@ public:
         if (domain.inDomain(x)) {
             return compute(x);
         } else
-            throw "Out of bounds";
+            throw "Out of bounds"; //TODO сделать нормальное исключение
     }
 };
 
