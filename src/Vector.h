@@ -21,7 +21,7 @@ class Vector;
 template <size_t dim>
 Vector<dim> pairWiseTransform(const Vector<dim> &a, const Vector<dim> &b, std::function<double(double, double)> f);
 
-
+//TODO: отказаться от шаблонов!!!!
 //! @brief Точка пространства
 //! \tparam dim Размерность пространства
 template <size_t dim>

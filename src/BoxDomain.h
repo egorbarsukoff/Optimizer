@@ -21,7 +21,7 @@ public:
     BoxDomain<dim> (std::array<std::array<double, 2>, dim> _bounds) : bounds(_bounds) {
         for (const std::array<double, dim>& b: bounds) {
             if (b[0] >= b[1])
-                throw "Bad bounds";
+                throw "Bad bounds"; //TODO: Сделать нормальное исключение
         }
     }
 

@@ -9,7 +9,7 @@
 #include "Optimizer.h"
 #include "Vector.h"
 
-
+//TODO: Реализовать
 template <size_t dim>
 class PolakRibiere : public Optimizer<dim> {
     class alphaFunction : public Function<1> {

@@ -9,7 +9,7 @@
 #include <initializer_list>
 #include "Vector.h"
 
-
+//TODO: Сделать фабрику
 //! @brief Абстрактный критерий остановки
 //! \tparam dim Размерность
 template <size_t dim>

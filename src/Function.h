@@ -10,7 +10,7 @@
 #include "BoxDomain.h"
 #include "Gradient.h"
 
-
+//TODO: Сделать фабрику
 //! @brief Класс абстрактной функции
 //! @tparam Размерность функции
 template <size_t dim>
