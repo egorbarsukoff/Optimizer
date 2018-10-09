@@ -7,7 +7,7 @@
 
 
 #include <vector>
-#include "Criterion.h"
+#include "Criteria.h"
 #include "Vector.h"
 #include "Function.h"
 
@@ -28,7 +28,7 @@ protected:
     const Function& f;
 
     //! Критерий остановки
-    Criterion& crit;
+    Criteria& crit;
 
     //! Абстрактный шаг оптимизатора
     virtual void step() = 0;
@@ -36,7 +36,7 @@ protected:
 public:
     //! Конструктор класса
     //! \param crit Кртерий остановки
-    explicit Optimizer(const Function &f, Criterion& crit) : f(f), crit(crit), n(0) {}
+    explicit Optimizer(const Function &f, Criteria& crit) : f(f), crit(crit), n(0) {}
 
     //! Старт оптимизации
     //! \param f Функция, которая будет оптимизироваться

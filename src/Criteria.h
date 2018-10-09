@@ -10,8 +10,7 @@
 
 //TODO: Сделать фабрику
 //! @brief Абстрактный критерий остановки
-//! \tparam dim Размерность
-class Criterion {
+class Criteria {
 public:
 
     //! Проверка абстрактного критерия
@@ -23,34 +22,25 @@ public:
 
 
 //! Композиция критериев
-//! \tparam dim Размерность
-class CriterionPack : public Criterion {
+class CriterionPack : public Criteria {
 
     //! Критерии, которые требуется проверять
-    std::vector<Criterion*> pack;
+    std::vector<Criteria*> pack; //TODO не хранить ссылки на внешние объекты!
 public:
     //! Конструктор композиции
     //! \param pack Набор критериев
-    explicit CriterionPack (std::vector<Criterion*> pack) : pack(pack) {}
+    explicit CriterionPack (std::vector<Criteria*> pack);
 
     //! Проверка критериев
     //! \param track
     //! \return Выполнены ли все критерии
-    bool operator() (const Track& track, size_t n) {
-        bool ans = true;
-        for (auto it = pack.begin(); it != pack.end() && ans; ++it) {
-            ans = (**it)(track, n) && ans;
-        }
-        return ans;
-    }
+    bool operator() (const Track& track, size_t n);
 
 };
 
 
-
 //! @brief Критерий максимального количеста итераций
-//! \tparam dim Размерность
-class MaxN : public Criterion{
+class MaxN : public Criteria{
 
     //! Максимальное коичество итераций
     size_t maxN;
@@ -58,61 +48,43 @@ public:
 
     //! Конструктор критерия
     //! \param maxN Максимальное количество итераций
-    explicit MaxN(size_t maxN) : Criterion(), maxN(maxN) {}
+    explicit MaxN(size_t maxN);
 
     //! Проверка критерия
     //! \param track
     //! \return Выполнен ли критерий
-    bool operator() (const Track& track, size_t n) {
-        return track.size() < maxN;
-    }
+    bool operator() (const Track& track, size_t n);
 };
 
 //! @brief Максимальное количество итераций без обновления (для RandomSearch)
 //! \tparam dim Размерность
-class NWithoutUpdates : public Criterion {
+class NWithoutUpdates : public Criteria {
     size_t n;
     size_t counter;
     size_t last_len;
 
 public:
-    explicit NWithoutUpdates(size_t n) : Criterion(), n(n), counter(0), last_len(0) {}
-    bool operator() (const Track& track, size_t nIt) {
-        if (track.size() != last_len) {
-            last_len = track.size();
-            counter = 0;
-        } else
-            ++counter;
-        return counter < n;
-    }
+    explicit NWithoutUpdates(size_t n);
+    bool operator() (const Track& track, size_t nIt);
 };
 
 //! @brief Критерий (f_{i-1} - f_i)/f_i < eps$
 //! \tparam dim размерность
-class FunctionChange : public Criterion {
+class FunctionChange : public Criteria {
     double eps;
 public:
-    explicit FunctionChange(double eps): eps(eps) {}
-    bool operator() (const Track& track, size_t nIt) {
-        if (track.size() != 1 && (track[track.size() - 2].second -
-            track[track.size() - 1].second)/track[track.size() - 1].second < eps)
-            return false;
-        return true;
-    }
+    explicit FunctionChange(double eps);
+    bool operator() (const Track& track, size_t nIt);
 };
 
 
 //! @brief Критерий нормы градиента
 //! \tparam dim Размерность
-class GrdientCriterion : public Criterion {
+class GradientCriterion : public Criteria {
     double eps;
 public:
-    explicit GrdientCriterion(double eps): eps(eps) {}
-    bool operator() (const Track& track, size_t nIt) {
-        if (track.back().first.norm() < eps)
-            return false;
-        return true;
-    }
+    explicit GradientCriterion(double eps);
+    bool operator() (const Track& track, size_t nIt);
 };
 
 

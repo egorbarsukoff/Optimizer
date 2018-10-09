@@ -2,7 +2,7 @@
 #include "src/Vector.h"
 #include "src/Gradient.h"
 #include "src/Random.h"
-#include "src/Criterion.h"
+#include "src/Criteria.h"
 #include "src/RandomSearch.h"
 
 int main() {
