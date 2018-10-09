@@ -37,7 +37,7 @@ double BoxDomain::measure() const {
 Vector BoxDomain::randomPoint() const {
     Vector p(bounds.size());
     for (size_t i = 0; i < p.getDim(); ++i) {
-        p[i] = CommonRandom::getU(bounds[i][0], bounds[i][1]);
+        p[i] = Random::getU(bounds[i][0], bounds[i][1]);
     }
     return p;
 }

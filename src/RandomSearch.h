@@ -24,7 +24,7 @@ class RandomSearch : public Optimizer {
     //! Шаг оптимизатора
     void step() {
         Vector new_point(track.back().first.getDim());
-        if (CommonRandom::getB(p))
+        if (Random::getB(p))
             new_point = Optimizer::f.getDomain().randomPoint();
         else
             new_point = (BoxDomain(Optimizer::track.back().first,

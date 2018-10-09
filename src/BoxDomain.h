@@ -7,7 +7,7 @@
 
 
 #include "Vector.h"
-#include "CommonRandom.h"
+#include "Random.h"
 
 
 //! @brief Область определения типа коробка

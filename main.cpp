@@ -1,7 +1,7 @@
 #include <iostream>
 #include "src/Vector.h"
 #include "src/Gradient.h"
-#include "src/CommonRandom.h"
+#include "src/Random.h"
 #include "src/Criterion.h"
 #include "src/RandomSearch.h"
 
