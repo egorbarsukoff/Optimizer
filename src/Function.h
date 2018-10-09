@@ -8,7 +8,6 @@
 #include <cmath>
 #include "Vector.h"
 #include "BoxDomain.h"
-#include "Gradient.h"
 
 //TODO: Сделать фабрику
 //! @brief Класс абстрактной функции
