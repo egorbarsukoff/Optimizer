@@ -16,14 +16,7 @@
 
 
 
-class Vector;
-
-template <size_t dim>
-Vector pairWiseTransform(const Vector &a, const Vector &b, std::function<double(double, double)> f);
-
-//TODO: отказаться от шаблонов!!!!
 //! @brief Точка пространства
-//! \tparam dim Размерность пространства
 class Vector {
 protected:
 
@@ -33,73 +26,50 @@ public:
 
     //! Конструктор
     //! \param x Массив координат точки
-    explicit Vector(std::vector<double> x) : x(std::move(x)) {};
+    explicit Vector(std::vector<double> x);
 
     //! Конструктор нулевой точки
-    Vector(size_t dim) : x(dim) {}
+    Vector(size_t dim);
 
     //! Конструктор копирования
-    Vector(const Vector& p) : Vector(p.x) {};
+    Vector(const Vector& p);
 
     //! Конструктор перемещения
-    Vector(Vector&& p) noexcept : Vector(std::move(p.x)) {};
+    Vector(Vector&& p) noexcept;
 
     //! Создает точку со всеми нулевыми координатыми, кроме координаты n
     //! \param n
-    explicit Vector(size_t dim, size_t n) : Vector(dim) {
-        x[n] = 1;
-    }
+    explicit Vector(size_t dim, size_t n);
 
     //! Возращает массив координат точек
     //! \return
-    const std::vector<double> &getX() const {
-        return x;
-    }
+    const std::vector<double> &getX() const;
 
-    size_t getDim() const {
-        return x.size();
-    }
+    size_t getDim() const;
 
     //!  Эвклидова норма вектора
     //! \return норма
-    double norm() const {
-        double sum = 0;
-        for (double i : x)
-            sum += i*i;
-        return pow(sum, 1./2);
-    }
+    double norm() const;
 
     //! Оператор копирования
     //! \param b
     //! \return
-    Vector& operator=(const Vector& b) {
-        x = b.x;
-        return *this;
-    }
+    Vector& operator=(const Vector& b) = default;
 
     //! Оператор перемещения
     //! \param b
     //! \return
-    Vector& operator=(Vector&& b) noexcept {
-        x = std::move(b.x);
-        return *this;
-    }
+    Vector& operator=(Vector&& b) noexcept = default;
 
     //! Возращает константное значение i-ой координаты
     //! \param i
     //! \return
-    double operator[](size_t i) const {
-        assert(i < x.size() && i >= 0);
-        return x[i];
-    }
+    double operator[](size_t i) const;
 
     //! Возращает неконстантное значение i-ой координаты
     //! \param i
     //! \return
-    double& operator[](size_t i) {
-        assert(i < x.size() && i >= 0);
-        return x[i];
-    }
+    double& operator[](size_t i);
 
     //! Умножение на скаляр
     //! \tparam dim Размерность
