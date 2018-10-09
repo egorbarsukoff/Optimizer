@@ -123,41 +123,12 @@ public:
     friend std::ostream& operator<<(std::ostream& o, const Vector& p);
 };
 
-
-Vector pairWiseTransform(const Vector &a, const Vector &b, std::function<double(double, double)> f) {
-    assert(a.x.size() == b.x.size());
-    Vector result(a.x);
-    std::transform(result.x.begin(), result.x.end(), b.x.cbegin(), result.x.begin(), f);
-    return result;
-}
-
-Vector operator+(const Vector &a, const Vector &b) {
-    return pairWiseTransform(a, b, std::plus<double>());
-}
-
-Vector operator-(const Vector &a, const Vector &b) {
-    return pairWiseTransform(a, b, std::minus<double>());
-}
+Vector operator+(const Vector &a, const Vector &b);
+Vector operator-(const Vector &a, const Vector &b);
+Vector operator*(Vector p, double a);
 
 
-Vector operator*(Vector p, double a) {
-    std::transform(p.x.begin(), p.x.end(), p.x.begin(), std::bind1st(std::multiplies<double>(), a));
-    return p;
-}
-
-std::ostream& operator<<(std::ostream& o, const Vector& p) {
-    o << "( ";
-    for (auto x : p.x) {
-        o << x << " ";
-    }
-    o << ")";
-}
-
-class BadDimension : std::exception {
-        
-    };
-
-
+//TODO Класс трека
 using Track = std::vector<std::pair<Vector, double >>;
 
 
