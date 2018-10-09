@@ -15,32 +15,28 @@
 #include <cmath>
 
 
-template <size_t dim>
+
 class Vector;
 
 template <size_t dim>
-Vector<dim> pairWiseTransform(const Vector<dim> &a, const Vector<dim> &b, std::function<double(double, double)> f);
+Vector pairWiseTransform(const Vector &a, const Vector &b, std::function<double(double, double)> f);
 
 //TODO: отказаться от шаблонов!!!!
 //! @brief Точка пространства
 //! \tparam dim Размерность пространства
-template <size_t dim>
 class Vector {
 protected:
 
     //! Хранит координаты точки
-    std::array<double, dim> x;
+    std::vector<double> x;
 public:
 
     //! Конструктор
     //! \param x Массив координат точки
-    explicit Vector(std::array<double, dim> x) : x(std::move(x)) {};
+    explicit Vector(std::vector<double> x) : x(std::move(x)) {};
 
     //! Конструктор нулевой точки
-    Vector() : x() {
-        for (auto& i : x)
-            i = 0;
-    };
+    Vector(size_t dim) : x(dim) {}
 
     //! Конструктор копирования
     Vector(const Vector& p) : Vector(p.x) {};
@@ -50,16 +46,19 @@ public:
 
     //! Создает точку со всеми нулевыми координатыми, кроме координаты n
     //! \param n
-    explicit Vector(size_t n) : Vector() {
+    explicit Vector(size_t dim, size_t n) : Vector(dim) {
         x[n] = 1;
     }
 
     //! Возращает массив координат точек
     //! \return
-    const std::array<double, dim> &getX() const {
+    const std::vector<double> &getX() const {
         return x;
     }
 
+    size_t getDim() const {
+        return x.size();
+    }
 
     //!  Эвклидова норма вектора
     //! \return норма
@@ -73,15 +72,15 @@ public:
     //! Оператор копирования
     //! \param b
     //! \return
-    Vector<dim>& operator=(const Vector<dim>& b) {
-        x = x.b;
+    Vector& operator=(const Vector& b) {
+        x = b.x;
         return *this;
     }
 
     //! Оператор перемещения
     //! \param b
     //! \return
-    Vector<dim>& operator=(Vector<dim>&& b) noexcept {
+    Vector& operator=(Vector&& b) noexcept {
         x = std::move(b.x);
         return *this;
     }
@@ -106,8 +105,7 @@ public:
     //! \tparam dim Размерность
     //! \param a Скаляр
     //! \return Резульат
-    template <size_t n>
-    friend Vector<n> operator*(Vector<n> p, double a);
+    friend Vector operator*(Vector p, double a);
 
     //! Применяет функцию f попарно к элементам Point
     //! \tparam n Размерность
@@ -115,46 +113,39 @@ public:
     //! \param b Вторая Point
     //! \param f Функция, которую надо пременить
     //! \return Результат
-    template <size_t n>
-    friend Vector<n> pairWiseTransform(const Vector<n> &a, const Vector<n> &b, std::function<double(double, double)> f);
+    friend Vector pairWiseTransform(const Vector &a, const Vector &b, std::function<double(double, double)> f);
 
     //! Вывод координат в круглых скобочках
     //! \tparam n Размерность
     //! \param o Поток вывода
     //! \param p Точка, которую необходимо вывести
     //! \return Измененный поток вывода
-    template <size_t n>
-    friend std::ostream& operator<<(std::ostream& o, const Vector<n>& p);
+    friend std::ostream& operator<<(std::ostream& o, const Vector& p);
 };
 
 
-template <size_t dim>
-Vector<dim> pairWiseTransform(const Vector<dim> &a, const Vector<dim> &b, std::function<double(double, double)> f) {
+Vector pairWiseTransform(const Vector &a, const Vector &b, std::function<double(double, double)> f) {
     assert(a.x.size() == b.x.size());
-    Vector<dim> result(a.x);
+    Vector result(a.x);
     std::transform(result.x.begin(), result.x.end(), b.x.cbegin(), result.x.begin(), f);
     return result;
 }
 
-template <size_t dim>
-Vector<dim> operator+(const Vector<dim> &a, const Vector<dim> &b) {
-    return pairWiseTransform<dim>(a, b, std::plus<double>());
+Vector operator+(const Vector &a, const Vector &b) {
+    return pairWiseTransform(a, b, std::plus<double>());
 }
 
-template <size_t dim>
-Vector<dim> operator-(const Vector<dim> &a, const Vector<dim> &b) {
-    return pairWiseTransform<dim>(a, b, std::minus<double>());
+Vector operator-(const Vector &a, const Vector &b) {
+    return pairWiseTransform(a, b, std::minus<double>());
 }
 
 
-template <size_t dim>
-Vector<dim> operator*(Vector<dim> p, double a) {
+Vector operator*(Vector p, double a) {
     std::transform(p.x.begin(), p.x.end(), p.x.begin(), std::bind1st(std::multiplies<double>(), a));
     return p;
 }
 
-template <size_t n>
-std::ostream& operator<<(std::ostream& o, const Vector<n>& p) {
+std::ostream& operator<<(std::ostream& o, const Vector& p) {
     o << "( ";
     for (auto x : p.x) {
         o << x << " ";
@@ -162,9 +153,12 @@ std::ostream& operator<<(std::ostream& o, const Vector<n>& p) {
     o << ")";
 }
 
+class BadDimension : std::exception {
+        
+    };
 
-template <size_t n>
-using Track = std::vector<std::pair<Vector<n>, double >>;
+
+using Track = std::vector<std::pair<Vector, double >>;
 
 
 #endif //OPTIMIZER_POINT_H

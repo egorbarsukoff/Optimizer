@@ -13,8 +13,7 @@
 
 //! @brief Оптимизация методом случайного поиска
 //! \tparam dim Размерность
-template <size_t dim>
-class RandomSearch : public Optimizer<dim> {
+class RandomSearch : public Optimizer {
 
     //! Вероятность, что точка будет выбираться из всего множества, а не из окрестности
     double p;
@@ -24,16 +23,16 @@ class RandomSearch : public Optimizer<dim> {
 
     //! Шаг оптимизатора
     void step() {
-        Vector<dim> new_point;
+        Vector new_point(track.back().first.getDim());
         if (CommonRandom::getB(p))
-            new_point = Optimizer<dim>::f.getDomain().randomPoint();
+            new_point = Optimizer::f.getDomain().randomPoint();
         else
-            new_point = (BoxDomain<dim>(Optimizer<dim>::track.back().first,
-                                   delta/sqrt(double(Optimizer<dim>::track.size()))) *
-                                   Optimizer<dim>::f.getDomain()).randomPoint();
+            new_point = (BoxDomain(Optimizer::track.back().first,
+                                   delta/sqrt(double(Optimizer::track.size()))) * //TODO: правильное уменьшиние окрестности
+                                   Optimizer::f.getDomain()).randomPoint();
         double t;
-        if ((t = Optimizer<dim>::f(new_point)) < Optimizer<dim>::f(Optimizer<dim>::track.back().first)) {
-            Optimizer<dim>::track.emplace_back(new_point, t);
+        if ((t = Optimizer::f(new_point)) < Optimizer::f(Optimizer::track.back().first)) {
+            Optimizer::track.emplace_back(new_point, t);
         }
     }
 public:
@@ -42,9 +41,9 @@ public:
     //! \param crits Критерий остановки
     //! \param h Размер окрестности
     //! \param p Вероятность выбора точки не из окрестности
-    RandomSearch(const Function<dim>& f, Criterion<dim>& crit, double h = 0.1, double p = 0.5) :
-                    Optimizer<dim>(f, crit), p(p) {
-        delta = pow(Optimizer<dim>::f.getDomain().measure(), 1./dim)*h;
+    RandomSearch(const Function& f, Criterion& crit, double h = 0.1, double p = 0.5) :
+                    Optimizer(f, crit), p(p) {
+        delta = pow(Optimizer::f.getDomain().measure(), 1./2)*h; //TODO: нормальная степень
     }
 };
 

@@ -13,29 +13,28 @@
 //TODO: Сделать фабрику
 //! @brief Класс абстрактной функции
 //! @tparam Размерность функции
-template <size_t dim>
 class Function {
 protected:
 
     //! Область определения функции
-    BoxDomain<dim> domain;
+    BoxDomain domain;
 
     //! Вычиление абстрактной функции в точке
     //! \param x Точка
     //! \return Результат
-    virtual double compute(const Vector<dim>& x) const = 0;
+    virtual double compute(const Vector& x) const = 0;
 public:
-    Function (const BoxDomain<dim>& domain) : domain(domain) {}
+    Function (const BoxDomain& domain) : domain(domain) {}
     //! Возвращает область определения
     //! \return
-    const BoxDomain<dim> &getDomain() const {
+    const BoxDomain &getDomain() const {
         return domain;
     }
 
     //! Вызов вычисления функции
     //! \param x Точка в которой вычисляется функция
     //! \return Результат
-    double operator()(const Vector<dim> &x) const {
+    double operator()(const Vector &x) const {
         if (domain.inDomain(x)) {
             return compute(x);
         } else
@@ -45,18 +44,18 @@ public:
 
 
 //! Функция Розенброка
-class Rosenbrock : public Function<2> {
+class Rosenbrock : public Function {
 
     //! Вычиление функции в точке
     //! \param x Точка
     //! \return Результат
-    double compute(const Vector<2>& x) const override {
+    double compute(const Vector& x) const override {
         return pow((1 - x[0]), 2) + 100 * pow((x[1] - pow(x[0], 2)), 2);
     }
 
 public:
 
-    Rosenbrock(const BoxDomain<2> domain) : Function(domain) {}
+    Rosenbrock(const BoxDomain domain) : Function(domain) {}
 };
 
 

@@ -15,21 +15,20 @@
 
 //! @brief Абстрактный оптимизатор функций
 //! \tparam dim
-template <size_t dim>
 class Optimizer {
 protected:
 
     //! Пройденные точки
-    Track<dim> track;
+    Track track;
 
     //! Количество итераций
     size_t n;
     //TODO: Убрать ссылки на внешние объекты
     //! Оптимизируемая функция
-    const Function<dim>& f;
+    const Function& f;
 
     //! Критерий остановки
-    Criterion<dim>& crit;
+    Criterion& crit;
 
     //! Абстрактный шаг оптимизатора
     virtual void step() = 0;
@@ -37,14 +36,14 @@ protected:
 public:
     //! Конструктор класса
     //! \param crit Кртерий остановки
-    explicit Optimizer(const Function<dim> &f, Criterion<dim>& crit) : f(f), crit(crit), n(0) {}
+    explicit Optimizer(const Function &f, Criterion& crit) : f(f), crit(crit), n(0) {}
 
     //! Старт оптимизации
     //! \param f Функция, которая будет оптимизироваться
     //! \param start Начальная точка
     //! \return Путь оптимизатора
-    Track<dim> optimize(const Vector<dim> &start) {
-        track = Track<dim>();
+    Track optimize(const Vector &start) {
+        track = Track();
         track.emplace_back(start, f(start));
         while (crit(track, n)) {
             step();

@@ -14,10 +14,10 @@
 //! @brief Градиент функции в точке
 //! \tparam dim Размерность
 template <size_t dim>
-class Gradient : public Vector<dim>{
+class Gradient : public Vector{
 
     //! Точка, в которой был вычиллен градиаент
-    const Vector<dim>& from;
+    const Vector& from;
 
     //! Вычисление производной одномерной функции в точке 0
     //! \param f Одномерная функция
@@ -32,10 +32,10 @@ public:
     //! Вычисление градиента
     //! \param f Функция
     //! \param p Точка, в которой будет вычисляться градиент
-    explicit Gradient<dim>(const Function<dim>& f, const Vector<dim>& p) : from(p) {
+    explicit Gradient(const Function& f, const Vector& p) : from(p) {
         for (size_t i = 0; i < from.getX().size(); ++i) {
             this->x[i] = D([&](double h) {
-                return f(p + Vector<dim>(i)*h);
+                return f(p + Vector(i)*h);
             });
         }
     }

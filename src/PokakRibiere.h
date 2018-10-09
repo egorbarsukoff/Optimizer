@@ -10,36 +10,35 @@
 #include "Vector.h"
 
 //TODO: Реализовать
-template <size_t dim>
-class PolakRibiere : public Optimizer<dim> {
-    class alphaFunction : public Function<1> {
-        const Function<dim>& f;
-        const Vector<dim>& p;
-        const Vector<dim>& x;
+class PolakRibiere : public Optimizer {
+//    class alphaFunction : public Function<1> {
+//        const Function& f;
+//        const Vector& p;
+//        const Vector& x;
+//
+//    public:
+//        alphaFunction(const Function& f, const Vector&p, const Vector&x) : Function(Limits(f, p, x)),
+//                                                                                        f(f), p(p), x(x) {}
+//        double operator() (const Vector<1>& alpha) {
+//            return f(x + p*alpha);
+//        }
+//    };
+//
+//    class liniarOptimizator : Optimizer {
+//
+//    };
 
-    public:
-        alphaFunction(const Function<dim>& f, const Vector<dim>&p, const Vector<dim>&x) : Function(Limits(f, p, x)),
-                                                                                        f(f), p(p), x(x) {}
-        double operator() (const Vector<1>& alpha) {
-            return f(x + p*alpha);
-        }
-    };
-
-    class liniarOptimizator : Optimizer<1> {
-
-    };
-
-    Vector<dim> p;
+    Vector p;
     void step() {
 
     }
 
     void setup() {
-        p = -Gradient<dim>(Optimizer<dim>::f, Optimizer<dim>::track.back().first);
+        p = -Gradient(Optimizer::f, Optimizer::track.back().first);
     }
 
 public:
-    PolakRibiere(const Function<dim> &f, Criterion<dim>& crit) : Optimizer<dim>(f, crit) {}
+    PolakRibiere(const Function &f, Criterion& crit) : Optimizer(f, crit) {}
 };
 
 
