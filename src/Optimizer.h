@@ -14,7 +14,6 @@
 
 
 //! @brief Абстрактный оптимизатор функций
-//! \tparam dim
 class Optimizer {
 protected:
 
@@ -36,21 +35,13 @@ protected:
 public:
     //! Конструктор класса
     //! \param crit Кртерий остановки
-    explicit Optimizer(const Function &f, Criteria& crit) : f(f), crit(crit), n(0) {}
+    explicit Optimizer(const Function &f, Criteria& crit);
 
     //! Старт оптимизации
     //! \param f Функция, которая будет оптимизироваться
     //! \param start Начальная точка
     //! \return Путь оптимизатора
-    Track optimize(const Vector &start) {
-        track = Track();
-        track.emplace_back(start, f(start));
-        while (crit(track, n)) {
-            step();
-            ++n;
-        }
-        return track;
-    }
+    Track optimize(const Vector &start);
 };
 
 
