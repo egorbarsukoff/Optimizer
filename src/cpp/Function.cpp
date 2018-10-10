@@ -17,8 +17,15 @@ double Function::operator()(const Vector &x) const {
         throw "Out of bounds"; //TODO сделать нормальное исключение
 }
 
+
+
+
 double Rosenbrock::compute(const Vector& x) const {
     return pow((1 - x[0]), 2) + 100 * pow((x[1] - pow(x[0], 2)), 2);
 }
 
 Rosenbrock::Rosenbrock(const BoxDomain domain) : Function(domain) {}
+
+std::shared_ptr<Function> Rosenbrock::copy() const {
+    return std::shared_ptr<Function>(new Rosenbrock(this->domain));
+}

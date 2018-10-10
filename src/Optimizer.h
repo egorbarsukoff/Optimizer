@@ -7,7 +7,7 @@
 
 
 #include <vector>
-#include "Criteria.h"
+#include "Criterion.h"
 #include "Vector.h"
 #include "Function.h"
 
@@ -22,12 +22,11 @@ protected:
 
     //! Количество итераций
     size_t n;
-    //TODO: Убрать ссылки на внешние объекты
     //! Оптимизируемая функция
-    const Function& f;
+    std::shared_ptr<const Function> f;
 
     //! Критерий остановки
-    Criteria& crit;
+    std::shared_ptr<Criterion> crit;
 
     //! Абстрактный шаг оптимизатора
     virtual void step() = 0;
@@ -35,7 +34,7 @@ protected:
 public:
     //! Конструктор класса
     //! \param crit Кртерий остановки
-    explicit Optimizer(const Function &f, Criteria& crit);
+    explicit Optimizer(const Function &f, Criterion& crit);
 
     //! Старт оптимизации
     //! \param f Функция, которая будет оптимизироваться

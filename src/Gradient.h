@@ -15,7 +15,7 @@
 class Gradient : public Vector{
 
     //! Точка, в которой был вычиллен градиаент
-    const Vector& from;
+    Vector from;
 
     //! Вычисление производной одномерной функции в точке 0
     //! \param f Одномерная функция

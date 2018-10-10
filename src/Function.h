@@ -6,10 +6,11 @@
 #define OPTIMIZER_FUNCTION_H
 
 #include <cmath>
+#include <memory>
 #include "Vector.h"
 #include "BoxDomain.h"
 
-//TODO: Сделать фабрику
+
 //! @brief Класс абстрактной функции
 //! @tparam Размерность функции
 class Function {
@@ -22,6 +23,7 @@ protected:
     //! \param x Точка
     //! \return Результат
     virtual double compute(const Vector& x) const = 0;
+
 public:
     Function (const BoxDomain& domain);
     //! Возвращает область определения
@@ -32,6 +34,8 @@ public:
     //! \param x Точка в которой вычисляется функция
     //! \return Результат
     double operator()(const Vector &x) const;
+
+    virtual std::shared_ptr<Function> copy() const = 0;
 };
 
 
@@ -45,7 +49,9 @@ class Rosenbrock : public Function {
 
 public:
 
-    Rosenbrock(const BoxDomain domain);
+    explicit Rosenbrock(const BoxDomain domain);
+
+    std::shared_ptr<Function> copy() const override;
 };
 
 

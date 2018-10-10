@@ -2,7 +2,7 @@
 #include "src/Vector.h"
 #include "src/Gradient.h"
 #include "src/Random.h"
-#include "src/Criteria.h"
+#include "src/Criterion.h"
 #include "src/RandomSearch.h"
 
 int main() {
@@ -12,7 +12,8 @@ int main() {
     MaxN crit(100);
     NWithoutUpdates crit2(10000);
     FunctionChange crit3(0.0001);
-    auto crits = CriterionPack({&crit, &crit2});
+    std::vector<Criterion*> t = {&crit, &crit2, &crit3};
+    auto crits = CriterionPack(t);
     RandomSearch search(f, crit2);
     auto ans = search.optimize(start);
 

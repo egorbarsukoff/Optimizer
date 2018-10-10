@@ -38,7 +38,7 @@ class PolakRibiere : public Optimizer {
     }
 
 public:
-    PolakRibiere(const Function &f, Criteria& crit) : Optimizer(f, crit) {}
+    PolakRibiere(const Function &f, Criterion& crit) : Optimizer(f, crit) {}
 };
 
 
