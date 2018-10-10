@@ -23,22 +23,15 @@ protected:
     //! \return Результат
     virtual double compute(const Vector& x) const = 0;
 public:
-    Function (const BoxDomain& domain) : domain(domain) {}
+    Function (const BoxDomain& domain);
     //! Возвращает область определения
     //! \return
-    const BoxDomain &getDomain() const {
-        return domain;
-    }
+    const BoxDomain &getDomain() const;
 
     //! Вызов вычисления функции
     //! \param x Точка в которой вычисляется функция
     //! \return Результат
-    double operator()(const Vector &x) const {
-        if (domain.inDomain(x)) {
-            return compute(x);
-        } else
-            throw "Out of bounds"; //TODO сделать нормальное исключение
-    }
+    double operator()(const Vector &x) const;
 };
 
 
@@ -48,13 +41,11 @@ class Rosenbrock : public Function {
     //! Вычиление функции в точке
     //! \param x Точка
     //! \return Результат
-    double compute(const Vector& x) const override {
-        return pow((1 - x[0]), 2) + 100 * pow((x[1] - pow(x[0], 2)), 2);
-    }
+    double compute(const Vector& x) const override;
 
 public:
 
-    Rosenbrock(const BoxDomain domain) : Function(domain) {}
+    Rosenbrock(const BoxDomain domain);
 };
 
 
