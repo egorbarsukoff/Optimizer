@@ -9,6 +9,7 @@ Optimizer::Optimizer(const Function &f, Criterion& crit) : f(f.copy()), crit(cri
 Track Optimizer::optimize(const Vector &start) {
     track = Track();
     track.emplace_back(start, (*f)(start));
+    crit.reset();
     while ((*crit)(track, n)) {
         step();
         ++n;

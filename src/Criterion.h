@@ -18,6 +18,7 @@ public:
     //! \param track Путь оптимизатора
     //! \return Выполнен критерий или нет
     virtual bool operator() (const Track& track, size_t n) = 0;
+    virtual void reset() {}
 
     virtual std::shared_ptr<Criterion> copy() const = 0;
 };
@@ -70,6 +71,7 @@ class NWithoutUpdates : public Criterion {
     size_t last_len;
     NWithoutUpdates(size_t n, size_t counter, size_t last_len);
 public:
+    virtual void reset() override;
     explicit NWithoutUpdates(size_t n);
     bool operator() (const Track& track, size_t nIt);
     std::shared_ptr<Criterion> copy() const override;

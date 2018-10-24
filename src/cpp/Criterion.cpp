@@ -57,6 +57,12 @@ std::shared_ptr<Criterion> NWithoutUpdates::copy() const {
     return std::shared_ptr<Criterion>(new NWithoutUpdates(n, counter, last_len));
 }
 
+void NWithoutUpdates::reset() {
+    Criterion::reset();
+    counter = 0;
+    last_len = 0;
+}
+
 std::shared_ptr<Criterion> FunctionChange::copy() const {
     return std::shared_ptr<Criterion>(new FunctionChange(eps));
 }
