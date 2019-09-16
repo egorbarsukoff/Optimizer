@@ -10,7 +10,7 @@ const BoxDomain &Function::getDomain() const {
     return domain;
 }
 
-double Function::operator()(const Vector &x) const {
+double Function::operator()(const std::valarray<double> &x) const {
     if (domain.inDomain(x)) {
         return compute(x);
     } else
@@ -20,7 +20,7 @@ double Function::operator()(const Vector &x) const {
 
 
 
-double Rosenbrock::compute(const Vector& x) const {
+double Rosenbrock::compute(const std::valarray<double>& x) const {
     return pow((1 - x[0]), 2) + 100 * pow((x[1] - pow(x[0], 2)), 2);
 }
 

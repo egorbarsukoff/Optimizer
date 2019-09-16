@@ -8,8 +8,8 @@
 
 #include <vector>
 #include "Criterion.h"
-#include "Vector.h"
 #include "Function.h"
+#include <valarray>
 
 
 
@@ -40,7 +40,7 @@ public:
     //! \param f Функция, которая будет оптимизироваться
     //! \param start Начальная точка
     //! \return Путь оптимизатора
-    Track optimize(const Vector &start);
+    Track optimize(const std::valarray<double> &start);
 };
 
 

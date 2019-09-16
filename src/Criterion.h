@@ -7,7 +7,9 @@
 
 
 #include <memory>
-#include "Vector.h"
+#include <valarray>
+#include <vector>
+#include "Track.h"
 
 
 //! @brief Абстрактный критерий остановки

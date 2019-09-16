@@ -6,10 +6,10 @@
 
 Optimizer::Optimizer(const Function &f, Criterion& crit) : f(f.copy()), crit(crit.copy()), n(0) {}
 
-Track Optimizer::optimize(const Vector &start) {
+Track Optimizer::optimize(const std::valarray<double> &start) {
     track = Track();
     track.emplace_back(start, (*f)(start));
-    crit.reset();
+    crit->reset();
     while ((*crit)(track, n)) {
         step();
         ++n;

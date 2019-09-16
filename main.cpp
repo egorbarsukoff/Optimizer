@@ -1,14 +1,24 @@
 #include <iostream>
-#include "src/Vector.h"
+#include <valarray>
 #include "src/Gradient.h"
 #include "src/Random.h"
 #include "src/Criterion.h"
 #include "src/RandomSearch.h"
 
+template <typename T>
+std::ostream& operator<<(std::ostream& stream, const std::valarray<T>& v) {
+    stream << "{ ";
+    for (auto& x: v) {
+        stream << x << ' ';
+    }
+    stream << '}';
+    return stream;
+}
+
 int main() {
     BoxDomain box({{-1, 1}, {-1, 1}});
     Rosenbrock f(box);
-    Vector start(std::vector<double>({1, 0}));
+    std::valarray<double> start({1, 0});
     MaxN crit(100);
     NWithoutUpdates crit2(10000);
     FunctionChange crit3(0.0001);
@@ -18,7 +28,7 @@ int main() {
     auto ans = search.optimize(start);
 
     for (auto& a : ans) {
-        std::cout << a.first << " " << a.second << std::endl;
+        std::cout << a.x << " " << a.y << std::endl;
     }
     return 0;
 }

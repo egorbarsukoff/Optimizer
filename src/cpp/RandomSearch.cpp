@@ -5,17 +5,17 @@
 #include "../RandomSearch.h"
 
 void RandomSearch::step() {
-    Vector new_point(track.back().first.getDim());
+    std::valarray<double> new_point(track.back().x.size());
     if (Random::getB(p))
         new_point = Optimizer::f->getDomain().randomPoint();
     else
-        new_point = (BoxDomain(Optimizer::track.back().first,
+        new_point = (BoxDomain(Optimizer::track.back().x,
                                delta / sqrt(double(Optimizer::track.size()))) *
                      //TODO: правильное уменьшиние окрестности
                      Optimizer::f->getDomain()).randomPoint();
     double t;
-    if ((t = (*f)(new_point)) < (*f)(Optimizer::track.back().first)) {
-        Optimizer::track.emplace_back(new_point, t);
+    if ((t = (*f)(new_point)) < (*f)(Optimizer::track.back().x)) {
+        Optimizer::track.emplace_back(std::move(new_point), t);
 
     }
 }

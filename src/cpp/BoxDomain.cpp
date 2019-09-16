@@ -11,15 +11,16 @@ BoxDomain::BoxDomain (std::vector<std::array<double, 2>> _bounds) : bounds(std::
     }
 }
 
-BoxDomain::BoxDomain (Vector p, double eps) : bounds(p.getDim()) {
-    for (size_t i = 0; i < p.getDim(); ++i) {
+BoxDomain::BoxDomain (const std::valarray<double>& p, double eps) : bounds(p.size()) {
+    for (size_t i = 0; i < p.size(); ++i) {
         bounds[i][0] = p[i] - eps;
         bounds[i][1] = p[i] + eps;
     }
 }
 
-bool BoxDomain::inDomain(const Vector& p) const {
-    for (int i = 0; i < p.getDim(); ++i) {
+bool BoxDomain::inDomain(const std::valarray<double>& p) const {
+    assert(p.size() == bounds.size());
+    for (size_t i = 0; i < p.size(); ++i) {
         if (bounds[i][0] > p[i] || bounds[i][1] < p[i])
             return false;
     }
@@ -28,15 +29,15 @@ bool BoxDomain::inDomain(const Vector& p) const {
 
 double BoxDomain::measure() const {
     double res = 1;
-    for (int i = 0; i < bounds.size(); ++i) {
-        res *= bounds[i][1] - bounds[i][0];
+    for (auto& bound : bounds) {
+        res *= bound[1] - bound[0];
     }
     return res;
 }
 
-Vector BoxDomain::randomPoint() const {
-    Vector p(bounds.size());
-    for (size_t i = 0; i < p.getDim(); ++i) {
+std::valarray<double> BoxDomain::randomPoint() const {
+    std::valarray<double> p(bounds.size());
+    for (size_t i = 0; i < p.size(); ++i) {
         p[i] = Random::getU(bounds[i][0], bounds[i][1]);
     }
     return p;

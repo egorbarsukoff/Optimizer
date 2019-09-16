@@ -5,10 +5,9 @@
 #ifndef OPTIMIZER_DOMAIN_H
 #define OPTIMIZER_DOMAIN_H
 
-
-#include "Vector.h"
 #include "Random.h"
-
+#include <valarray>
+#include <array>
 
 //! @brief Область определения типа коробка
 class BoxDomain {
@@ -21,20 +20,20 @@ public:
     //! Конструктор окрестности
     //! \param p Центр окрестности
     //! \param eps Размер окрестности
-    BoxDomain (Vector p, double eps);
+    BoxDomain (const std::valarray<double>& p, double eps);
 
     //! Проверка, что точка находится внутри области определения
     //! \param p Проверяемая точка
     //! \return Результат
-    bool inDomain(const Vector& p) const;
+    [[nodiscard]] bool inDomain(const std::valarray<double>& p) const;
 
     //! Случайная Point в области определения
     //! \return
-    Vector randomPoint() const;
+    [[nodiscard]] std::valarray<double> randomPoint() const;
 
     //! Мера Лебега области
     //! \return
-    double measure() const;
+    [[nodiscard]] double measure() const;
 
     //! Пересечние двух областей определения
     //! \param d Вторая область определения

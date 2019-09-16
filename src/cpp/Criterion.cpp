@@ -70,17 +70,18 @@ std::shared_ptr<Criterion> FunctionChange::copy() const {
 FunctionChange::FunctionChange(double eps): eps(eps) {}
 
 bool FunctionChange::operator() (const Track& track, size_t nIt) {
-    if (track.size() != 1 && (track[track.size() - 2].second -
-                              track[track.size() - 1].second)/track[track.size() - 1].second < eps)
-        return false;
-    return true;
+    return !(track.size() != 1 && (track[track.size() - 2].y -
+        track[track.size() - 1].y) / track[track.size() - 1].y < eps);
 }
 
 
 GradientCriterion::GradientCriterion(double eps): eps(eps) {}
 
 bool GradientCriterion::operator() (const Track& track, size_t nIt) {
-    if (track.back().first.norm() < eps)
+    auto norm = [](const std::valarray<double>& x) {
+        return sqrt((x * x).sum());
+    };
+    if (norm(track.back().x) < eps)
         return false;
     return true;
 }

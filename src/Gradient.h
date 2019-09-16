@@ -7,26 +7,26 @@
 
 #include <functional>
 #include <iostream>
-#include "Vector.h"
+#include "valarray"
 #include "Function.h"
 
 
 //! @brief Градиент функции в точке
-class Gradient : public Vector{
+class Gradient : public std::valarray<double>{
 
     //! Точка, в которой был вычиллен градиаент
-    Vector from;
+    std::valarray<double> from;
 
     //! Вычисление производной одномерной функции в точке 0
     //! \param f Одномерная функция
     //! \return Резульат
-    static double D(std::function<double(double)> f);
+    static double D(const std::function<double(double)> &f);
 public:
 
     //! Вычисление градиента
     //! \param f Функция
     //! \param p Точка, в которой будет вычисляться градиент
-    explicit Gradient(const Function& f, const Vector& p);
+    explicit Gradient(const Function& f, const std::valarray<double>& p);
 
 };
 
