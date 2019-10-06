@@ -19,12 +19,14 @@ int main() {
     BoxDomain box({{-1, 1}, {-1, 1}});
     Rosenbrock f(box);
     std::valarray<double> start({1, 0});
-    MaxN crit(100);
-    NWithoutUpdates crit2(10000);
-    FunctionChange crit3(0.0001);
-    std::vector<Criterion*> t = {&crit, &crit2, &crit3};
-    auto crits = CriterionPack(t);
-    RandomSearch search(f, crit2);
+    auto crit = NWithoutUpdates::create(1000);
+    auto crit2 = MaxN::create(100);
+    //    auto comp = CriterionPack::create();
+    //    RandomSearch search(f, std::move(comp));
+    std::vector<std::unique_ptr<Criterion>> aa;
+    aa.push_back(std::move(crit));
+    auto a = CriterionPack::create(std::move(aa));
+    RandomSearch search(f, std::move(a));
     auto ans = search.optimize(start);
 
     for (auto& a : ans) {

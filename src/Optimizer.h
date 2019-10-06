@@ -26,7 +26,7 @@ protected:
     std::shared_ptr<const Function> f;
 
     //! Критерий остановки
-    std::shared_ptr<Criterion> crit;
+    std::unique_ptr<Criterion> crit;
 
     //! Абстрактный шаг оптимизатора
     virtual void step() = 0;
@@ -34,7 +34,7 @@ protected:
 public:
     //! Конструктор класса
     //! \param crit Кртерий остановки
-    explicit Optimizer(const Function &f, Criterion& crit);
+    explicit Optimizer(const Function &f, std::unique_ptr<Criterion> crit);
 
     //! Старт оптимизации
     //! \param f Функция, которая будет оптимизироваться

@@ -20,7 +20,7 @@ void RandomSearch::step() {
     }
 }
 
-RandomSearch::RandomSearch(const Function& f, Criterion& crit, double h, double p) :
-        Optimizer(f, crit), p(p) {
+RandomSearch::RandomSearch(const Function &f, std::unique_ptr<Criterion> crit, double h, double p) :
+    Optimizer(f, std::move(crit)), p(p) {
     delta = pow(Optimizer::f->getDomain().measure(), 1./2)*h; //TODO: нормальная степень
 }
