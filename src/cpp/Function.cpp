@@ -31,6 +31,7 @@ std::valarray<double> Function::gradient(const std::valarray<double> &x) {
             return (*this)(x + ix * h);
         });
     }
+    return ans;
 }
 
 double Rosenbrock::compute(const std::valarray<double>& x) const {
