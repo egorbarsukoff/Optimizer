@@ -30,10 +30,13 @@ public:
     //! \return
     const BoxDomain &getDomain() const;
 
+
     //! Вызов вычисления функции
     //! \param x Точка в которой вычисляется функция
     //! \return Результат
     double operator()(const std::valarray<double> &x) const;
+
+    std::valarray<double> gradient(const std::valarray<double> &x);
 
     virtual std::shared_ptr<Function> copy() const = 0;
 };

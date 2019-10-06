@@ -52,3 +52,6 @@ BoxDomain operator*(const BoxDomain& a, const BoxDomain& b) {
     }
     return BoxDomain(new_box);
 }
+size_t BoxDomain::dim() const {
+    return bounds.size();
+}

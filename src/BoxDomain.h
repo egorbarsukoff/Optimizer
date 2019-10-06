@@ -35,6 +35,8 @@ public:
     //! \return
     [[nodiscard]] double measure() const;
 
+    [[nodiscard]] size_t dim() const;
+
     //! Пересечние двух областей определения
     //! \param d Вторая область определения
     //! \return Результат
