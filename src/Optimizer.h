@@ -23,7 +23,7 @@ protected:
     //! Количество итераций
     size_t n;
     //! Оптимизируемая функция
-    std::shared_ptr<const Function> f;
+    std::unique_ptr<const Function> f;
 
     //! Критерий остановки
     std::unique_ptr<Criterion> crit;
@@ -34,7 +34,7 @@ protected:
 public:
     //! Конструктор класса
     //! \param crit Кртерий остановки
-    explicit Optimizer(const Function &f, std::unique_ptr<Criterion> crit);
+    explicit Optimizer(std::unique_ptr<Function> f, std::unique_ptr<Criterion> crit);
 
     //! Старт оптимизации
     //! \param f Функция, которая будет оптимизироваться

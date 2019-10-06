@@ -22,13 +22,13 @@ protected:
     //! Вычиление абстрактной функции в точке
     //! \param x Точка
     //! \return Результат
-    virtual double compute(const std::valarray<double>& x) const = 0;
+    [[nodiscard]] virtual double compute(const std::valarray<double> &x) const = 0;
 
 public:
-    Function (const BoxDomain& domain);
+    explicit Function(BoxDomain domain);
     //! Возвращает область определения
     //! \return
-    const BoxDomain &getDomain() const;
+    [[nodiscard]] const BoxDomain &getDomain() const;
 
 
     //! Вызов вычисления функции
@@ -37,8 +37,6 @@ public:
     double operator()(const std::valarray<double> &x) const;
 
     std::valarray<double> gradient(const std::valarray<double> &x);
-
-    virtual std::shared_ptr<Function> copy() const = 0;
 };
 
 
@@ -48,13 +46,13 @@ class Rosenbrock : public Function {
     //! Вычиление функции в точке
     //! \param x Точка
     //! \return Результат
-    double compute(const std::valarray<double>& x) const override;
+    [[nodiscard]] double compute(const std::valarray<double> &x) const override;
 
 public:
 
-    explicit Rosenbrock(const BoxDomain domain);
+    explicit Rosenbrock(BoxDomain domain);
 
-    std::shared_ptr<Function> copy() const override;
+    [[nodiscard]] static std::unique_ptr<Function> create(BoxDomain box);
 };
 
 

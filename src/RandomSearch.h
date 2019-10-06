@@ -29,7 +29,7 @@ public:
     //! \param crits Критерий остановки
     //! \param h Размер окрестности
     //! \param p Вероятность выбора точки не из окрестности
-    RandomSearch(const Function &f, std::unique_ptr<Criterion> crit, double h = 0.1, double p = 0.5);
+    RandomSearch(std::unique_ptr<Function> f, std::unique_ptr<Criterion> crit, double h = 0.1, double p = 0.5);
 };
 
 

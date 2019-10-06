@@ -7,7 +7,7 @@
 BoxDomain::BoxDomain (std::vector<std::array<double, 2>> _bounds) : bounds(std::move(_bounds)) {
     for (const std::array<double, 2>& b: bounds) {
         if (b[0] >= b[1])
-            throw "Bad bounds"; //TODO: Сделать нормальное исключение
+            throw std::runtime_error("Bad bounds");
     }
 }
 
