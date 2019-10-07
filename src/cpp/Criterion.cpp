@@ -13,6 +13,11 @@ bool CriterionPack::operator()(const Track &track, size_t n) {
     }
     return ans;
 }
+void CriterionPack::reset() {
+    for (auto &crit : pack) {
+        crit->reset();
+    }
+}
 
 MaxN::MaxN(size_t maxN) : Criterion(), maxN(maxN) {}
 

@@ -33,7 +33,7 @@ public:
     //! \param track
     //! \return Выполнены ли все критерии
     bool operator()(const Track &track, size_t n) override;
-
+    void reset() override;
 };
 
 //! @brief Критерий максимального количеста итераций
