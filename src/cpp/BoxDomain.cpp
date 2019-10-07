@@ -12,15 +12,15 @@ BoxDomain::BoxDomain (std::vector<std::array<double, 2>> _bounds) : bounds(std::
 }
 
 BoxDomain::BoxDomain(const Eigen::VectorXd &p, double eps) : bounds(p.size()) {
-    for (size_t i = 0; i < p.size(); ++i) {
+    for (size_t i = 0; i < static_cast<size_t>(p.size()); ++i) {
         bounds[i][0] = p[i] - eps;
         bounds[i][1] = p[i] + eps;
     }
 }
 
 bool BoxDomain::inDomain(const Eigen::VectorXd &p) const {
-    assert(p.size() == bounds.size());
-    for (size_t i = 0; i < p.size(); ++i) {
+    assert(static_cast<size_t>(p.size()) == bounds.size());
+    for (size_t i = 0; i < static_cast<size_t>(p.size()); ++i) {
         if (bounds[i][0] > p[i] || bounds[i][1] < p[i])
             return false;
     }
@@ -37,7 +37,7 @@ double BoxDomain::measure() const {
 
 Eigen::VectorXd BoxDomain::randomPoint() const {
     Eigen::VectorXd p(bounds.size());
-    for (size_t i = 0; i < p.size(); ++i) {
+    for (size_t i = 0; i < static_cast<size_t>(p.size()); ++i) {
         p[i] = Random::getU(bounds[i][0], bounds[i][1]);
     }
     return p;

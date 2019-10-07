@@ -19,13 +19,13 @@ protected:
     //! Пройденные точки
     Track track;
 
-    //! Количество итераций
-    size_t n;
     //! Оптимизируемая функция
     std::unique_ptr<const AbstractFunction> f;
-
     //! Критерий остановки
     std::unique_ptr<Criterion> crit;
+
+    //! Количество итераций
+    size_t n;
 
     //! Абстрактный шаг оптимизатора
     virtual void step() = 0;

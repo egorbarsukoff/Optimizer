@@ -39,7 +39,7 @@ Eigen::VectorXd AbstractFunction::num_grad(const Eigen::VectorXd &x) const {
     };
 
     Eigen::VectorXd ans(this->domain.dim());
-    for (size_t i = 0; i < x.size(); ++i) {
+    for (size_t i = 0; i < static_cast<size_t>(x.size()); ++i) {
         ans[i] = D([&](double h) {
             Eigen::VectorXd ix = Eigen::VectorXd::Zero(x.size());
             ix[i] = 1;
