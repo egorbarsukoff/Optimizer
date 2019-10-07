@@ -18,7 +18,7 @@ public:
     //! Конструктор
     //! @param f  оптимизируемая функция
     //! @param step начальный шаг сетки
-    LinearOptimizer(std::unique_ptr<Function> f, double step);
+    LinearOptimizer(std::unique_ptr<AbstractFunction> f, double step);
 protected:
     //! Шаг оптимизатора
     void step() override;

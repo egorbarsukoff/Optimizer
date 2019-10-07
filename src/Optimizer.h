@@ -22,7 +22,7 @@ protected:
     //! Количество итераций
     size_t n;
     //! Оптимизируемая функция
-    std::unique_ptr<const Function> f;
+    std::unique_ptr<const AbstractFunction> f;
 
     //! Критерий остановки
     std::unique_ptr<Criterion> crit;
@@ -36,7 +36,7 @@ protected:
 public:
     //! Конструктор класса
     //! \param crit Кртерий остановки
-    explicit Optimizer(std::unique_ptr<Function> f, std::unique_ptr<Criterion> crit);
+    explicit Optimizer(std::unique_ptr<AbstractFunction> f, std::unique_ptr<Criterion> crit);
 
     //! Старт оптимизации
     //! \param f Функция, которая будет оптимизироваться

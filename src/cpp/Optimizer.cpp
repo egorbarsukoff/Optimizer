@@ -4,7 +4,7 @@
 
 #include "../Optimizer.h"
 
-Optimizer::Optimizer(std::unique_ptr<Function> f, std::unique_ptr<Criterion> crit_)
+Optimizer::Optimizer(std::unique_ptr<AbstractFunction> f, std::unique_ptr<Criterion> crit_)
     : f(std::move(f)), crit(std::move(crit_)), n(0) {}
 
 Track Optimizer::optimize(const Eigen::VectorXd &start) {
