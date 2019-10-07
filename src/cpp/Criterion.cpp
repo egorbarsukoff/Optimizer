@@ -56,7 +56,7 @@ bool FunctionChange::operator()([[maybe_unused]] const Track &track, [[maybe_unu
 GradientCriterion::GradientCriterion(double eps) : eps(eps) {}
 
 bool GradientCriterion::operator()([[maybe_unused]] const Track &track, [[maybe_unused]] size_t nIt) {
-    auto norm = [](const std::valarray<double> &x) {
+    auto norm = [](const Eigen::VectorXd &x) {
         return sqrt((x * x).sum());
     };
     if (norm(track.back().x) < eps)

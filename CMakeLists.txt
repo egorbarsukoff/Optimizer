@@ -7,6 +7,10 @@ set(SOURCE_FILES main.cpp
         src/cpp/BoxDomain.cpp src/cpp/Random.cpp src/cpp/RandomSearch.cpp
         src/cpp/Criterion.cpp src/cpp/Optimizer.cpp src/cpp/Function.cpp src/cpp/Track.cpp)
 
+
+find_package(Eigen3 REQUIRED)
+include_directories(${EIGEN3_INCLUDE_DIR})
+
 file(GLOB SRC_FILES src/cpp/*.cpp)
 file(GLOB HEADERS_FILES src/*.h)
 add_library(optimizer ${SRC_FILES})

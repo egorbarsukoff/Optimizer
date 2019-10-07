@@ -6,8 +6,8 @@
 #define OPTIMIZER_DOMAIN_H
 
 #include "Random.h"
-#include <valarray>
 #include <array>
+#include <Eigen/Core>
 
 //! @brief Область определения типа коробка
 class BoxDomain {
@@ -20,16 +20,16 @@ public:
     //! Конструктор окрестности
     //! \param p Центр окрестности
     //! \param eps Размер окрестности
-    BoxDomain (const std::valarray<double>& p, double eps);
+    BoxDomain(const Eigen::VectorXd &p, double eps);
 
     //! Проверка, что точка находится внутри области определения
     //! \param p Проверяемая точка
     //! \return Результат
-    [[nodiscard]] bool inDomain(const std::valarray<double>& p) const;
+    [[nodiscard]] bool inDomain(const Eigen::VectorXd &p) const;
 
     //! Случайная Point в области определения
     //! \return
-    [[nodiscard]] std::valarray<double> randomPoint() const;
+    [[nodiscard]] Eigen::VectorXd randomPoint() const;
 
     //! Мера Лебега области
     //! \return
@@ -39,7 +39,7 @@ public:
 
     //! Такая $\alpha$, что $x + \alpha p$, лежит на границе области
     //! \return $\alpha$
-    [[nodiscard]] double intersectCoeff(const std::valarray<double> &x, const std::valarray<double> &p) const;
+    [[nodiscard]] double intersectCoeff(const Eigen::VectorXd &x, const Eigen::VectorXd &p) const;
 
     //! Пересечние двух областей определения
     //! \param d Вторая область определения

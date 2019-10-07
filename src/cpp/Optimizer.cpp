@@ -4,13 +4,13 @@
 
 #include "../Optimizer.h"
 
-Optimizer::Optimizer(std::unique_ptr<Function> f, std::unique_ptr<Criterion> crit)
-    : f(std::move(f)), crit(std::move(crit)), n(0) {}
+Optimizer::Optimizer(std::unique_ptr<Function> f, std::unique_ptr<Criterion> crit_)
+    : f(std::move(f)), crit(std::move(crit_)), n(0) {}
 
-Track Optimizer::optimize(const std::valarray<double> &start) {
+Track Optimizer::optimize(const Eigen::VectorXd &start) {
+    reset();
     track = Track();
     track.emplace_back(start, (*f)(start));
-    reset();
     while ((*crit)(track, n)) {
         step();
         ++n;
@@ -20,5 +20,5 @@ Track Optimizer::optimize(const std::valarray<double> &start) {
 void Optimizer::reset() {
     track = Track{};
     n = 0;
-    crit.reset();
+    crit->reset();
 }

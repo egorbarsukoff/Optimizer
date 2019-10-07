@@ -4,19 +4,11 @@
 #include "src/Criterion.h"
 #include "src/RandomSearch.h"
 
-template <typename T>
-std::ostream& operator<<(std::ostream& stream, const std::valarray<T>& v) {
-    stream << "{ ";
-    for (auto& x: v) {
-        stream << x << ' ';
-    }
-    stream << '}';
-    return stream;
-}
 
 int main() {
     BoxDomain box({{-1, 1}, {-1, 1}});
-    std::valarray<double> start({1, 0});
+    Eigen::VectorXd start(2);
+    start << 1, 0;
     auto crit = std::make_unique<NWithoutUpdates>(10000);
     auto crit2 = std::make_unique<MaxN>(100);
     //    auto comp = CriterionPack::create();

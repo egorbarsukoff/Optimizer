@@ -10,10 +10,10 @@
 //! @brief Нахождение конца промежутка монотонного убывания функции на $[x, b]$, где $b$ - конец области определения $f$
 class LinearOptimizer : public Optimizer {
     //! Начальный шаг сетки
-    std::valarray<double> init_step_size;
+    Eigen::VectorXd init_step_size;
 
     //! Текущий шаг сетки
-    std::valarray<double> step_size;
+    Eigen::VectorXd step_size;
 public:
     //! Конструктор
     //! @param f  оптимизируемая функция

@@ -4,8 +4,10 @@
 
 #include "../RandomSearch.h"
 
+
 void RandomSearch::step() {
-    std::valarray<double> new_point(track.back().x.size());
+    Eigen::VectorXd new_point(track.back().x.size());
+
     if (Random::getB(p))
         new_point = Optimizer::f->getDomain().randomPoint();
     else

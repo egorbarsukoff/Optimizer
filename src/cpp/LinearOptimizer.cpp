@@ -7,8 +7,10 @@
 LinearOptimizer::LinearOptimizer(std::unique_ptr<Function> f, double step) : Optimizer(std::move(f),
                                                                                        std::make_unique<
                                                                                            NWithoutUpdates>(10)),
-                                                                             init_step_size{step},
-                                                                             step_size{step} {
+                                                                             init_step_size(
+                                                                                 Eigen::VectorXd::Ones(1) * step),
+                                                                             step_size(
+                                                                                 Eigen::VectorXd::Ones(1) * step) {
     if (f->getDomain().dim() != 1) {
         throw std::runtime_error("Function must de dim 1");
     }

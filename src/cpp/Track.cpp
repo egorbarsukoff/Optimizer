@@ -3,4 +3,4 @@
 //
 
 #include "../Track.h"
-F::F(std::valarray<double> x, double y) : x{std::move(x)}, y{y}{}
+F::F(Eigen::VectorXd x, double y) : x{std::move(x)}, y{y} {}

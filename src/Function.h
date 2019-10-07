@@ -7,7 +7,7 @@
 
 #include <cmath>
 #include <memory>
-#include <valarray>
+#include <Eigen/Core>
 #include "BoxDomain.h"
 
 
@@ -22,7 +22,7 @@ protected:
     //! Вычиление абстрактной функции в точке
     //! \param x Точка
     //! \return Результат
-    [[nodiscard]] virtual double compute(const std::valarray<double> &x) const = 0;
+    [[nodiscard]] virtual double compute(const Eigen::VectorXd &x) const = 0;
 
 public:
     explicit Function(BoxDomain domain);
@@ -34,9 +34,9 @@ public:
     //! Вызов вычисления функции
     //! \param x Точка в которой вычисляется функция
     //! \return Результат
-    double operator()(const std::valarray<double> &x) const;
+    double operator()(const Eigen::VectorXd &x) const;
 
-    std::valarray<double> gradient(const std::valarray<double> &x);
+    Eigen::VectorXd gradient(const Eigen::VectorXd &x);
 };
 
 
@@ -46,7 +46,7 @@ class Rosenbrock : public Function {
     //! Вычиление функции в точке
     //! \param x Точка
     //! \return Результат
-    [[nodiscard]] double compute(const std::valarray<double> &x) const override;
+    [[nodiscard]] double compute(const Eigen::VectorXd &x) const override;
 
 public:
 

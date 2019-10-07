@@ -9,7 +9,6 @@
 #include <vector>
 #include "Criterion.h"
 #include "Function.h"
-#include <valarray>
 
 
 
@@ -43,7 +42,7 @@ public:
     //! \param f Функция, которая будет оптимизироваться
     //! \param start Начальная точка
     //! \return Путь оптимизатора
-    Track optimize(const std::valarray<double> &start);
+    Track optimize(const Eigen::VectorXd &start);
 };
 
 
