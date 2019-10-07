@@ -52,7 +52,6 @@ public:
 
     explicit Rosenbrock(BoxDomain domain);
 
-    [[nodiscard]] static std::unique_ptr<Function> create(BoxDomain box);
 };
 
 

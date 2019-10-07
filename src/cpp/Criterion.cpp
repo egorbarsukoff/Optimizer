@@ -13,9 +13,6 @@ bool CriterionPack::operator()(const Track &track, size_t n) {
     }
     return ans;
 }
-std::unique_ptr<Criterion> CriterionPack::create(std::vector<std::unique_ptr<Criterion>> crits) {
-    return std::make_unique<CriterionPack>(std::move(crits));
-}
 
 MaxN::MaxN(size_t maxN) : Criterion(), maxN(maxN) {}
 
@@ -23,9 +20,6 @@ bool MaxN::operator()([[maybe_unused]] const Track &track, [[maybe_unused]] size
     return track.size() < maxN;
 }
 
-std::unique_ptr<Criterion> MaxN::create(size_t maxN) {
-    return std::make_unique<MaxN>(maxN);
-}
 
 NWithoutUpdates::NWithoutUpdates(size_t n) : Criterion(), n(n), counter(0), last_len(0) {}
 
@@ -46,18 +40,12 @@ void NWithoutUpdates::reset() {
     counter = 0;
     last_len = 0;
 }
-std::unique_ptr<Criterion> NWithoutUpdates::create(size_t maxN) {
-    return std::make_unique<NWithoutUpdates>(maxN);
-}
 
 FunctionChange::FunctionChange(double eps) : eps(eps) {}
 
 bool FunctionChange::operator()([[maybe_unused]] const Track &track, [[maybe_unused]] size_t nIt) {
     return !(track.size() != 1 && (track[track.size() - 2].y -
         track[track.size() - 1].y) / track[track.size() - 1].y < eps);
-}
-std::unique_ptr<Criterion> FunctionChange::create(double eps) {
-    return std::make_unique<FunctionChange>(eps);
 }
 
 GradientCriterion::GradientCriterion(double eps) : eps(eps) {}
@@ -71,8 +59,5 @@ bool GradientCriterion::operator()([[maybe_unused]] const Track &track, [[maybe_
     return true;
 }
 
-std::unique_ptr<Criterion> GradientCriterion::create(double eps) {
-    return std::make_unique<GradientCriterion>(eps);
-}
 
 

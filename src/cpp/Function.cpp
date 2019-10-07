@@ -40,7 +40,4 @@ double Rosenbrock::compute(const std::valarray<double>& x) const {
 
 Rosenbrock::Rosenbrock(BoxDomain domain) : Function(std::move(domain)) {}
 
-std::unique_ptr<Function> Rosenbrock::create(BoxDomain box) {
-    return std::make_unique<Rosenbrock>(std::move(box));
-}
 

@@ -29,7 +29,6 @@ public:
     //! Конструктор композиции
     explicit CriterionPack(std::vector<std::unique_ptr<Criterion>> crits);
 
-    [[nodiscard]] static std::unique_ptr<Criterion> create(std::vector<std::unique_ptr<Criterion>> crits);
     //! Проверка критериев
     //! \param track
     //! \return Выполнены ли все критерии
@@ -49,8 +48,6 @@ public:
     //! \param maxN Максимальное количество итераций
     explicit MaxN(size_t maxN);
 
-    [[nodiscard]] static std::unique_ptr<Criterion> create(size_t maxN);
-
     //! Проверка критерия
     //! \param track
     //! \return Выполнен ли критерий
@@ -66,7 +63,6 @@ class NWithoutUpdates : public Criterion {
     NWithoutUpdates(size_t n, size_t counter, size_t last_len);
 public:
     explicit NWithoutUpdates(size_t n);
-    [[nodiscard]] static std::unique_ptr<Criterion> create(size_t maxN);
     void reset() override;
     bool operator()([[maybe_unused]] const Track &track, [[maybe_unused]] size_t nIt) override;
 };
@@ -77,7 +73,6 @@ class FunctionChange : public Criterion {
     double eps;
 public:
     explicit FunctionChange(double eps);
-    [[nodiscard]] static std::unique_ptr<Criterion> create(double eps);
     bool operator()([[maybe_unused]] const Track &track, [[maybe_unused]] size_t nIt) override;
 };
 
@@ -87,7 +82,6 @@ class GradientCriterion : public Criterion {
     double eps;
 public:
     explicit GradientCriterion(double eps);
-    [[nodiscard]] static std::unique_ptr<Criterion> create(double eps);
 
     bool operator()([[maybe_unused]] const Track &track, [[maybe_unused]] size_t nIt) override;
 
