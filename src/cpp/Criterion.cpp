@@ -38,7 +38,7 @@ bool NWithoutUpdates::operator()([[maybe_unused]] const Track &track, [[maybe_un
 }
 
 NWithoutUpdates::NWithoutUpdates(size_t n, size_t counter, size_t last_len) :
-    n(n), last_len(last_len), counter(counter) {}
+    n(n), counter(counter), last_len(last_len) {}
 
 void NWithoutUpdates::reset() {
     Criterion::reset();
