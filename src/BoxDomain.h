@@ -37,6 +37,10 @@ public:
 
     [[nodiscard]] size_t dim() const;
 
+    //! Такая $\alpha$, что $x + \alpha p$, лежит на границе области
+    //! \return $\alpha$
+    [[nodiscard]] double intersectCoeff(const std::valarray<double> &x, const std::valarray<double> &p) const;
+
     //! Пересечние двух областей определения
     //! \param d Вторая область определения
     //! \return Результат

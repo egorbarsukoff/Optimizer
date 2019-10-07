@@ -31,6 +31,9 @@ protected:
     //! Абстрактный шаг оптимизатора
     virtual void step() = 0;
 
+    //! Сброс оптимизатора
+    virtual void reset();
+
 public:
     //! Конструктор класса
     //! \param crit Кртерий остановки

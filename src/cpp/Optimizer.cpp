@@ -10,10 +10,15 @@ Optimizer::Optimizer(std::unique_ptr<Function> f, std::unique_ptr<Criterion> cri
 Track Optimizer::optimize(const std::valarray<double> &start) {
     track = Track();
     track.emplace_back(start, (*f)(start));
-    crit->reset();
+    reset();
     while ((*crit)(track, n)) {
         step();
         ++n;
     }
     return track;
+}
+void Optimizer::reset() {
+    track = Track{};
+    n = 0;
+    crit.reset();
 }
