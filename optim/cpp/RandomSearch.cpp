@@ -2,7 +2,7 @@
 // Created by egorb on 10.10.2018.
 //
 
-#include "../RandomSearch.h"
+#include "optim/RandomSearch.h"
 
 
 void RandomSearch::step() {

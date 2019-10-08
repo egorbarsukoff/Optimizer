@@ -2,7 +2,7 @@
 // Created by egorb on 10.10.2018.
 //
 
-#include "../Optimizer.h"
+#include "optim/Optimizer.h"
 
 Optimizer::Optimizer(std::unique_ptr<AbstractFunction> f, std::unique_ptr<Criterion> crit_)
     : f(std::move(f)), crit(std::move(crit_)), n(0) {}

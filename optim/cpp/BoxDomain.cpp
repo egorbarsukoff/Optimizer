@@ -2,7 +2,7 @@
 // Created by egorb on 10.10.2018.
 //
 
-#include "../BoxDomain.h"
+#include "optim/BoxDomain.h"
 
 BoxDomain::BoxDomain (std::vector<std::array<double, 2>> _bounds) : bounds(std::move(_bounds)) {
     for (const std::array<double, 2>& b: bounds) {

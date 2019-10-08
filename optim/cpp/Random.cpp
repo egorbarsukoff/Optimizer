@@ -2,7 +2,7 @@
 // Created by egorb on 10.10.2018.
 //
 
-#include "../Random.h"
+#include "optim/Random.h"
 
 std::mt19937& Random::get_mt() {
     static std::mt19937 mt;

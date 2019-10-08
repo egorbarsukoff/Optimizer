@@ -2,7 +2,7 @@
 // Created by egorb on 10.10.2018.
 //
 
-#include "../Criterion.h"
+#include "optim/Criterion.h"
 
 CriterionPack::CriterionPack(std::vector<std::unique_ptr<Criterion>> crits) : pack(std::move(crits)) {}
 

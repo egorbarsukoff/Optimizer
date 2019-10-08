@@ -1,8 +1,8 @@
 #include <iostream>
 #include <valarray>
-#include "src/Random.h"
-#include "src/Criterion.h"
-#include "src/RandomSearch.h"
+#include "optim/Random.h"
+#include "optim/Criterion.h"
+#include "optim/RandomSearch.h"
 
 
 int main() {

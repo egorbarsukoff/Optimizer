@@ -2,7 +2,7 @@
 // Created by egor on 10/7/19.
 //
 
-#include "LinearOptimizer.h"
+#include "optim/LinearOptimizer.h"
 
 LinearOptimizer::LinearOptimizer(std::unique_ptr<AbstractFunction> f, double step) : Optimizer(std::move(f),
                                                                                                std::make_unique<
