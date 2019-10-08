@@ -55,3 +55,20 @@ BoxDomain operator*(const BoxDomain& a, const BoxDomain& b) {
 size_t BoxDomain::dim() const {
     return bounds.size();
 }
+
+double BoxDomain::intersectCoeff(const Eigen::VectorXd &x, const Eigen::VectorXd &p) const {
+    assert(x.size() == p.size());
+    assert(inDomain(x));
+    auto max_coef = std::numeric_limits<double>::max();
+    for (int i = 0; i < p.size(); ++i) {
+        if (abs(p[i]) < 1e-4) {
+            continue;
+        }
+        double bound = (p[i] > 0 ? bounds[i][1] : bounds[i][0]) - x[i];
+        max_coef = std::min(max_coef, bound / p[i]);
+    }
+    if (max_coef == std::numeric_limits<double>::max()) {
+        throw std::runtime_error("zero p");
+    }
+    return max_coef;
+}

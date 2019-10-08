@@ -4,13 +4,10 @@
 
 #include "optim/LinearOptimizer.h"
 
-LinearOptimizer::LinearOptimizer(std::unique_ptr<AbstractFunction> f, double step) : Optimizer(std::move(f),
-                                                                                               std::make_unique<
-                                                                                           NWithoutUpdates>(10)),
-                                                                                     init_step_size(
-                                                                                 Eigen::VectorXd::Ones(1) * step),
-                                                                                     step_size(
-                                                                                 Eigen::VectorXd::Ones(1) * step) {
+LinearOptimizer::LinearOptimizer(std::unique_ptr<AbstractFunction> f_, double step) :
+    Optimizer(std::move(f_), std::make_unique<NWithoutUpdates>(10)),
+    init_step_size(Eigen::VectorXd::Ones(1) * step),
+    step_size(Eigen::VectorXd::Ones(1) * step) {
     if (f->getDomain().dim() != 1) {
         throw std::runtime_error("AbstractFunction must de dim 1");
     }
