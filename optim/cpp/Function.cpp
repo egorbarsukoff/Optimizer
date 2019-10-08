@@ -49,6 +49,10 @@ Eigen::VectorXd AbstractFunction::num_grad(const Eigen::VectorXd &x) const {
     return ans;
 }
 
+Eigen::MatrixXd AbstractFunction::num_hess(const Eigen::VectorXd &x) const {
+    return Eigen::MatrixXd::Identity(x.size(), x.size());  // TODO
+}
+
 double Rosenbrock::compute(const Eigen::VectorXd &x) const {
     return pow((1 - x[0]), 2) + 100 * pow((x[1] - pow(x[0], 2)), 2);
 }
