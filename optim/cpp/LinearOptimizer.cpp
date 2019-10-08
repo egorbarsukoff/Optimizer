@@ -24,7 +24,7 @@ void LinearOptimizer::step() {
     if (auto y = (*f)(x); track.back().y > y) {
         track.emplace_back(x, y);
     } else {
-        step_size /= 2;
+        step_size /= -2;
     }
 }
 void LinearOptimizer::reset() {
