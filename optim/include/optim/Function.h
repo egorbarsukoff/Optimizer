@@ -25,21 +25,7 @@ protected:
     [[nodiscard]] virtual Eigen::VectorXd compute_grad(const Eigen::VectorXd &x) const;
     [[nodiscard]] virtual Eigen::MatrixXd compute_hess(const Eigen::VectorXd &x) const;
 
-    template<typename T>
-    [[nodiscard]] static double D(T &&f) {
-        double h = 0.00001;
-        auto t = (f(h) - f(-h)) / (2 * h);
-        return t;
-    }
-
-    template<typename T>
-    [[nodiscard]] static double D2(T &&f) {
-        double h = 1e-4;
-        auto t = (f(h, h) - f(-h, h) - f(h, -h) + f(-h, -h)) / (4 * h * h);
-        return t;
-    }
-
-    [[nodiscard]] Eigen::VectorXd num_grad(const Eigen::VectorXd &x) const;
+    [[nodiscard]] Eigen::MatrixXd num_hess(const Eigen::VectorXd &x) const;
     template<typename T>
     decltype(auto) checkBoxAndCall(T &&f, const Eigen::VectorXd &x) const {
         if (domain.inDomain(x)) {
@@ -50,7 +36,7 @@ protected:
 
 public:
 
-    [[nodiscard]] Eigen::MatrixXd num_hess(const Eigen::VectorXd &x) const;
+    [[nodiscard]] Eigen::VectorXd num_grad(const Eigen::VectorXd &x) const;
     explicit AbstractFunction(BoxDomain domain);
     //! Возвращает область определения
     //! \return

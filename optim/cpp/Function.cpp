@@ -3,6 +3,7 @@
 //
 
 
+#include <iostream>
 #include "optim/Function.h"
 
 AbstractFunction::AbstractFunction(BoxDomain domain) : domain(std::move(domain)) {}
@@ -32,31 +33,91 @@ Eigen::MatrixXd AbstractFunction::compute_hess(const Eigen::VectorXd &x) const {
 }
 
 Eigen::VectorXd AbstractFunction::num_grad(const Eigen::VectorXd &x) const {
+    static auto D = [](auto &&f, int mode) {
+        /* modes:
+         * 0 - not on bounds
+         * 1 - left bound
+         * 2 - right bound
+         */
+        double h = 0.1e-5;
+        switch (mode) {
+        case 0:return (f(h) - f(-h)) / (2 * h);
+        case 1:return (f(h) - f(0)) / (h);
+        case 2:return (f(0) - f(-h)) / (h);
+        default:assert(false);
+        }
+    };
     Eigen::VectorXd ans(this->domain.dim());
     for (size_t i = 0; i < static_cast<size_t>(x.size()); ++i) {
-        ans[i] = D([&](double h) {
-            Eigen::VectorXd ix = Eigen::VectorXd::Zero(x.size());
-            ix[i] = 1;
-            return (*this)(x + ix * h);
-        });
+        for (int mode = 0; mode < 3; ++mode) {
+            try {
+                ans[i] = D([&](double h) {
+                    Eigen::VectorXd ix = Eigen::VectorXd::Zero(x.size());
+                    ix[i] = 1;
+                    return (*this)(x + ix * h);
+                }, mode);
+            } catch (std::runtime_error &e) {
+                continue;
+            }
+            break;
+        }
+
     }
     return ans;
 }
 
 Eigen::MatrixXd AbstractFunction::num_hess(const Eigen::VectorXd &x) const {
+    static auto D2 = [](auto &&f, int mode) {
+        /* modes:
+         * 0 - not on bounds
+         * 1 - left bound
+         * 2 - right bound
+         * 3 - upper bound
+         * 4 - lower bound
+         * 5 - upper left corner
+         * 6 - upper right corner
+         * 7 - lower left corner
+         * 8 - lower right corner
+         * */
+        double h = 1e-5;
+        switch (mode) {
+        case 0:return (f(h, h) - f(-h, h) - f(h, -h) + f(-h, -h)) / (4 * h * h);
+        case 1:return (f(h, h) - f(0, h) - f(h, -h) + f(0, -h)) / (2 * h * h);
+        case 2:return (f(0, h) - f(-h, h) - f(0, -h) + f(-h, -h)) / (2 * h * h);
+        case 3:return (f(h, 0) - f(-h, 0) - f(h, -h) + f(-h, -h)) / (2 * h * h);
+        case 4:return (f(h, h) - f(-h, h) - f(h, 0) + f(-h, 0)) / (2 * h * h);
+        case 5:return (f(h, 0) - f(0, 0) - f(h, -h) + f(0, -h)) / (h * h);
+        case 6:return (f(0, 0) - f(-h, 0) - f(0, -h) + f(-h, -h)) / (h * h);
+        case 7:return (f(h, h) - f(0, h) - f(h, 0) + f(0, 0)) / (h * h);
+        case 8:return (f(0, h) - f(-h, h) - f(0, 0) + f(0, -h)) / (h * h);
+        default:assert(false);
+        }
+    };
     Eigen::MatrixXd res(x.size(), x.size());
     for (long int i = 0; i < x.size(); ++i) {
         for (long int j = 0; j <= i; ++j) {
-            double d = D2([&](double h1, double h2) {
-                Eigen::VectorXd ix1 = Eigen::VectorXd::Zero(x.size());
-                Eigen::VectorXd ix2 = Eigen::VectorXd::Zero(x.size());
-                ix1[i] = h1;
-                ix2[j] = h2;
-                return (*this)(x + ix1 + ix2);
-            });
-            res(i, j) = d;
-            if (i != j) {
-                res(j, i) = d;
+            for (int mode = 0; mode < 9; ++mode) { // try to calculate all possible num formulas
+                try {
+                    double d = D2([&](double h1, double h2) {
+                        Eigen::VectorXd ix1 = Eigen::VectorXd::Zero(x.size());
+                        Eigen::VectorXd ix2 = Eigen::VectorXd::Zero(x.size());
+                        ix1[i] = h1;
+                        ix2[j] = h2;
+                        return (*this)(x + ix1 + ix2);
+                    }, mode);
+                    res(i, j) = d;
+                    if (i != j) {
+                        res(j, i) = d;
+                    }
+                } catch (std::runtime_error &e) {
+                    if (mode != 8)
+                        continue;
+                    else {
+                        std::cout << x << "\n\n";
+                        throw;
+                    }
+                }
+                break;
             }
         }
     }

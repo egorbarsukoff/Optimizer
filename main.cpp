@@ -7,10 +7,12 @@
 int main() {
     BoxDomain box{{{-2, 2}, {-2, 2}}};
     auto r = std::make_unique<Rosenbrock>(std::move(box));
-    for (int i = 0; i < 5; i += 1) {
+    std::vector<double> c;
+    for (int i = 0; i < 20000; i += 1) {
         auto x = r->getDomain().randomPoint();
-        std::cout << (r->hessian(x) - r->num_hess(x)) << "\n\n";
+        c.push_back((r->gradient(x) - r->num_grad(x)).maxCoeff());
     }
+    std::cout << *std::max_element(c.begin(), c.end());
     //    auto f = std::make_unique<Function>(box,[](auto x) {
     //        return cos(x[0]);
     //    });
