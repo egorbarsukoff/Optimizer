@@ -38,6 +38,8 @@ public:
     //! \param crit Кртерий остановки
     explicit Optimizer(std::unique_ptr<AbstractFunction> f, std::unique_ptr<Criterion> crit);
 
+    void set_f(std::unique_ptr<const AbstractFunction> f);
+
     //! Старт оптимизации
     //! \param f Функция, которая будет оптимизироваться
     //! \param start Начальная точка

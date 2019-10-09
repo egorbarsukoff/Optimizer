@@ -22,3 +22,7 @@ void Optimizer::reset() {
     n = 0;
     crit->reset();
 }
+void Optimizer::set_f(std::unique_ptr<const AbstractFunction> f) {
+    Optimizer::reset();
+    Optimizer::f = std::move(f);
+}

@@ -61,7 +61,7 @@ double BoxDomain::intersectCoeff(const Eigen::VectorXd &x, const Eigen::VectorXd
     assert(inDomain(x));
     auto max_coef = std::numeric_limits<double>::max();
     for (int i = 0; i < p.size(); ++i) {
-        if (abs(p[i]) < 1e-4) {
+        if (abs(p[i]) < 1e-8) {
             continue;
         }
         double bound = (p[i] > 0 ? bounds[i][1] : bounds[i][0]) - x[i];
