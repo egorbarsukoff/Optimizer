@@ -48,7 +48,7 @@ BoxDomain operator*(const BoxDomain& a, const BoxDomain& b) {
     for (size_t i = 0; i < new_box.size(); ++i) {
         new_box[i][0] = std::max(a.bounds[i][0], b.bounds[i][0]);
         new_box[i][1] = std::min(a.bounds[i][1], b.bounds[i][1]);
-        assert(new_box[i][0] < new_box[i][1]);
+        assert(new_box[i][0] <= new_box[i][1]);
     }
     return BoxDomain(new_box);
 }

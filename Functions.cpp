@@ -22,10 +22,10 @@ Eigen::MatrixXd Rosenbrock::compute_hess(const Eigen::VectorXd &x) const {
     return res;
 }
 
-Rosenbrock::Rosenbrock() : AbstractFunction(BoxDomain{{{-2, 2}, {-2, 2}}}) {}
+Rosenbrock::Rosenbrock(BoxDomain domain) : AbstractFunction(std::move(domain)) {}
 
 double SquareFunction::compute(const Eigen::VectorXd &x) const {
     // $x^2 + 3y^2 + 6z^2 + 2xy - 2xz + yz$
     return x[0] * x[0] + 3 * x[1] * x[1] + 6 * x[2] * x[2] + 2 * x[0] * x[1];
 }
-SquareFunction::SquareFunction() : AbstractFunction(BoxDomain{{{-3, 3}, {-3, 3}, {-3, 3}}}) {}
+SquareFunction::SquareFunction(BoxDomain domain) : AbstractFunction(std::move(domain)) {}

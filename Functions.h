@@ -21,7 +21,7 @@ protected:
 
 public:
 
-    explicit Rosenbrock();
+    explicit Rosenbrock(BoxDomain domain);
 
 };
 
@@ -31,7 +31,7 @@ class SquareFunction : public AbstractFunction {
 protected:
     [[nodiscard]] double compute(const Eigen::VectorXd &x) const override;
 public:
-    SquareFunction();
+    SquareFunction(BoxDomain domain);
 };
 
 #endif //OPTIMIZER__FUNCTIONS_H

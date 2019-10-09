@@ -22,7 +22,7 @@ void CriterionPack::reset() {
 MaxN::MaxN(size_t maxN) : Criterion(), maxN(maxN) {}
 
 bool MaxN::operator()([[maybe_unused]] const Track &track, [[maybe_unused]] size_t n) {
-    return (ssize_t)track.size() - 1 < maxN;
+    return n < maxN;
 }
 
 

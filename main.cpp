@@ -7,15 +7,15 @@
 
 #include "optim/Task.h"
 
-
-int main() {
-    BoxDomain box{{{-2, 2}, {-2, 2}}};
+int main(int argc, char *argv[]) {
+    BoxDomain box2d{{{-2, 2}, {-2, 2}}};
+    BoxDomain box3d{{{-2, 2}, {-2, 2}, {-2, 2}}};
 
     Task task;
-    task.set_f<Rosenbrock>(box);
-    task.add_crit<MaxN>(10);
-    task.set_start(0, 0);
-    auto[x, y] = task.start_and_reset<NewtonOptimizer>();
+    task.set_f<Rosenbrock>(std::move(box2d));
+    task.add_crit<MaxN>(20);
+    task.set_start(2, 1);
+    auto[x, y] = task.start_and_reset<RandomSearch>();
 
     std::cout << x;
 
