@@ -41,6 +41,8 @@ public:
     //! \return $\alpha$
     [[nodiscard]] double intersectCoeff(const Eigen::VectorXd &x, const Eigen::VectorXd &p) const;
 
+    const std::array<double, 2> &operator[](size_t i) const;
+
     //! Пересечние двух областей определения
     //! \param d Вторая область определения
     //! \return Результат

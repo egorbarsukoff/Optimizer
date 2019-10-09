@@ -72,3 +72,6 @@ double BoxDomain::intersectCoeff(const Eigen::VectorXd &x, const Eigen::VectorXd
     }
     return max_coef;
 }
+const std::array<double, 2> &BoxDomain::operator[](size_t i) const {
+    return bounds[i];
+}
