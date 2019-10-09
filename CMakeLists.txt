@@ -9,5 +9,5 @@ include_directories(${EIGEN3_INCLUDE_DIR})
 
 add_subdirectory(optim)
 
-add_executable(optimizer_test main.cpp)
+add_executable(optimizer_test main.cpp Functions.cpp)
 target_link_libraries(optimizer_test optimizer)

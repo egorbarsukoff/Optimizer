@@ -76,15 +76,5 @@ public:
     bool operator()([[maybe_unused]] const Track &track, [[maybe_unused]] size_t nIt) override;
 };
 
-//! @brief Критерий нормы градиента
-//! \tparam dim Размерность
-class GradientCriterion : public Criterion {
-    double eps;
-public:
-    explicit GradientCriterion(double eps);
-
-    bool operator()([[maybe_unused]] const Track &track, [[maybe_unused]] size_t nIt) override;
-
-};
 
 #endif //OPTIMIZER_CRITERION_H

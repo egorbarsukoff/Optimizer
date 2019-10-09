@@ -6,9 +6,12 @@
 #include <Eigen/Dense>
 #include <iostream>
 
-void NewtonOptimizer::step() {
+bool NewtonOptimizer::step() {
     auto &x = track.back().x;
     Eigen::VectorXd p = -f->hessian(x).inverse() * f->gradient(x);
+    if (p.cwiseAbs().maxCoeff() < 1e-7) {
+        return true;
+    }
     p *= f->getDomain().intersectCoeff(x, p);
     linOpt.set_f(std::make_unique<Function>(BoxDomain{{{0, 1}}}, [this, &p, &x](const auto &a) {
         return (*f)(x + p * a[0]);
@@ -16,6 +19,7 @@ void NewtonOptimizer::step() {
     auto linOptRes = linOpt.optimize(Eigen::VectorXd::Zero(1)).back();
     Eigen::VectorXd new_x = x + p * linOptRes.x[0];
     track.emplace_back(new_x, linOptRes.y);
+    return false;
 }
 
 void NewtonOptimizer::reset() {

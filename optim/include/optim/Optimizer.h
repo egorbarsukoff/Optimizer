@@ -28,7 +28,7 @@ protected:
     size_t n;
 
     //! Абстрактный шаг оптимизатора
-    virtual void step() = 0;
+    virtual bool step() = 0;
 
     //! Сброс оптимизатора
     virtual void reset();

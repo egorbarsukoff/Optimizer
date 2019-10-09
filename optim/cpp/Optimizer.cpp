@@ -11,8 +11,9 @@ Track Optimizer::optimize(const Eigen::VectorXd &start) {
     reset();
     track = Track();
     track.emplace_back(start, (*f)(start));
-    while ((*crit)(track, n)) {
-        step();
+    bool finished = false;
+    while (!finished && (*crit)(track, n)) {
+        finished = step();
         ++n;
     }
     return track;

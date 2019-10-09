@@ -9,9 +9,9 @@
 #include "LinearOptimizer.h"
 
 class NewtonOptimizer : public Optimizer {
-    LinearOptimizer linOpt = {std::unique_ptr<AbstractFunction>(nullptr), 0.05};
+    LinearOptimizer linOpt = {std::unique_ptr<AbstractFunction>(nullptr), std::unique_ptr<Criterion>(nullptr), 0.05};
 protected:
-    void step() override;
+    bool step() override;
     void reset() override;
 public:
     NewtonOptimizer(std::unique_ptr<AbstractFunction> f, std::unique_ptr<Criterion> crit);

@@ -21,7 +21,7 @@ class RandomSearch : public Optimizer {
     double delta;
 
     //! Шаг оптимизатора
-    void step() override;
+    bool step() override;
 
 public:
     //!

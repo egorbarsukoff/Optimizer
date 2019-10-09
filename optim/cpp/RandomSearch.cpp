@@ -4,8 +4,7 @@
 
 #include "optim/RandomSearch.h"
 
-
-void RandomSearch::step() {
+bool RandomSearch::step() {
     Eigen::VectorXd new_point(track.back().x.size());
 
     if (Random::getB(p))
@@ -20,6 +19,7 @@ void RandomSearch::step() {
         Optimizer::track.emplace_back(std::move(new_point), t);
 
     }
+    return false;
 }
 
 RandomSearch::RandomSearch(std::unique_ptr<AbstractFunction> f, std::unique_ptr<Criterion> crit, double h, double p) :

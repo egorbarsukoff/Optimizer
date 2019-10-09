@@ -78,21 +78,6 @@ public:
              std::function<Eigen::MatrixXd(const Eigen::VectorXd &)> hess);
 };
 
-//! Функция Розенброка
-class Rosenbrock : public AbstractFunction {
 
-    //! Вычиление функции в точке
-    //! \param x Точка
-    //! \return Результат
-    [[nodiscard]] double compute(const Eigen::VectorXd &x) const override;
-protected:
-    Eigen::VectorXd compute_grad(const Eigen::VectorXd &x) const override;
-    Eigen::MatrixXd compute_hess(const Eigen::VectorXd &x) const override;
-
-public:
-
-    explicit Rosenbrock(BoxDomain domain);
-
-};
 
 #endif //OPTIMIZER_FUNCTION_H
