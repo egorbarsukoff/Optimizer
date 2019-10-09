@@ -57,7 +57,10 @@ Eigen::VectorXd AbstractFunction::num_grad(const Eigen::VectorXd &x) const {
                     return (*this)(x + ix * h);
                 }, mode);
             } catch (std::runtime_error &e) {
-                continue;
+                if (i != 2)
+                    continue;
+                else
+                    throw;
             }
             break;
         }
