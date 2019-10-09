@@ -2,6 +2,7 @@
 // Created by egorb on 10.10.2018.
 //
 
+#include <iostream>
 #include "optim/BoxDomain.h"
 
 BoxDomain::BoxDomain (std::vector<std::array<double, 2>> _bounds) : bounds(std::move(_bounds)) {
@@ -21,7 +22,7 @@ BoxDomain::BoxDomain(const Eigen::VectorXd &p, double eps) : bounds(p.size()) {
 bool BoxDomain::inDomain(const Eigen::VectorXd &p) const {
     assert(static_cast<size_t>(p.size()) == bounds.size());
     for (size_t i = 0; i < static_cast<size_t>(p.size()); ++i) {
-        if (bounds[i][0] > p[i] || bounds[i][1] < p[i])
+        if (bounds[i][0] > p[i] + 1e-9 || bounds[i][1] < p[i] - 1e-9)
             return false;
     }
     return true;

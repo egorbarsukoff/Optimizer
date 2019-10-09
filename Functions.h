@@ -26,12 +26,20 @@ public:
 };
 
 //! $x^2 + 3y^2 + 6z^2 + 2xy $
-class SquareFunction : public AbstractFunction {
+class SquareFunction3 : public AbstractFunction {
 
 protected:
     [[nodiscard]] double compute(const Eigen::VectorXd &x) const override;
 public:
-    SquareFunction(BoxDomain domain);
+    SquareFunction3(BoxDomain domain_);
+};
+
+class SinCos4 : public AbstractFunction {
+public:
+    SinCos4(BoxDomain domain_);
+protected:
+    double compute(const Eigen::VectorXd &x) const override;
+
 };
 
 #endif //OPTIMIZER__FUNCTIONS_H

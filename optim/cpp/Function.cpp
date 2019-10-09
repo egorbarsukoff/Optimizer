@@ -47,6 +47,7 @@ Eigen::VectorXd AbstractFunction::num_grad(const Eigen::VectorXd &x) const {
         default:assert(false);
         }
     };
+    assert(this->getDomain().inDomain(x));
     Eigen::VectorXd ans(this->domain.dim());
     for (size_t i = 0; i < static_cast<size_t>(x.size()); ++i) {
         for (int mode = 0; mode < 3; ++mode) {
@@ -57,10 +58,12 @@ Eigen::VectorXd AbstractFunction::num_grad(const Eigen::VectorXd &x) const {
                     return (*this)(x + ix * h);
                 }, mode);
             } catch (std::runtime_error &e) {
-                if (i != 2)
+                if (mode != 2)
                     continue;
-                else
+                else {
+                    std::cout << x << x.size() << std::endl;
                     throw;
+                }
             }
             break;
         }

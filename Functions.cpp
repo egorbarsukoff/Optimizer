@@ -24,8 +24,18 @@ Eigen::MatrixXd Rosenbrock::compute_hess(const Eigen::VectorXd &x) const {
 
 Rosenbrock::Rosenbrock(BoxDomain domain) : AbstractFunction(std::move(domain)) {}
 
-double SquareFunction::compute(const Eigen::VectorXd &x) const {
+double SquareFunction3::compute(const Eigen::VectorXd &x) const {
     // $x^2 + 3y^2 + 6z^2 + 2xy - 2xz + yz$
     return x[0] * x[0] + 3 * x[1] * x[1] + 6 * x[2] * x[2] + 2 * x[0] * x[1];
 }
-SquareFunction::SquareFunction(BoxDomain domain) : AbstractFunction(std::move(domain)) {}
+SquareFunction3::SquareFunction3(BoxDomain domain_) : AbstractFunction(std::move(domain_)) {
+    assert(domain.dim() == 3);
+}
+
+SinCos4::SinCos4(BoxDomain domain_) : AbstractFunction(std::move(domain_)) {
+    assert(domain.dim() == 4);
+}
+
+double SinCos4::compute(const Eigen::VectorXd &x) const {
+    return sin(x[0]) * sin(x[1]) * x[2] / cos(x[3] * 10);
+}

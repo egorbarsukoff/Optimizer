@@ -8,11 +8,15 @@
 
 bool NewtonOptimizer::step() {
     auto &x = track.back().x;
+    if (-f->hessian(x).determinant() < 1e-2) {
+        throw std::runtime_error("Hessian determinant equal 0");
+    }
     Eigen::VectorXd p = -f->hessian(x).inverse() * f->gradient(x);
-    if (p.cwiseAbs().maxCoeff() < 1e-7) {
+    try {
+        p *= f->getDomain().intersectCoeff(x, p);
+    } catch (std::runtime_error &e) {
         return true;
     }
-    p *= f->getDomain().intersectCoeff(x, p);
     linOpt.set_f(std::make_unique<Function>(BoxDomain{{{0, 1}}}, [this, &p, &x](const auto &a) {
         return (*f)(x + p * a[0]);
     }));
