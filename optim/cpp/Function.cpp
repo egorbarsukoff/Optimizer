@@ -119,7 +119,6 @@ Eigen::MatrixXd AbstractFunction::num_hess(const Eigen::VectorXd &x) const {
                     if (mode != 8)
                         continue;
                     else {
-                        std::cout << x << "\n\n";
                         throw;
                     }
                 }

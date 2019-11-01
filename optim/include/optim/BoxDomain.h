@@ -27,7 +27,7 @@ public:
     //! \return Результат
     [[nodiscard]] bool inDomain(const Eigen::VectorXd &p) const;
 
-    //! Случайная Point в области определения
+    //! Случайный вектор в области определения
     //! \return
     [[nodiscard]] Eigen::VectorXd randomPoint() const;
 
@@ -35,12 +35,15 @@ public:
     //! \return
     [[nodiscard]] double measure() const;
 
+    //! Размерность области
     [[nodiscard]] size_t dim() const;
 
     //! Такая $\alpha$, что $x + \alpha p$, лежит на границе области
     //! \return $\alpha$
     [[nodiscard]] double intersectCoeff(const Eigen::VectorXd &x, const Eigen::VectorXd &p) const;
 
+    //! Границы в i-ой размерности
+    //! \return {left_bound, right_bound}
     const std::array<double, 2> &operator[](size_t i) const;
 
     //! Пересечние двух областей определения

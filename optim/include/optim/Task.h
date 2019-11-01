@@ -12,7 +12,7 @@
 
 class Task {
     std::optional<std::unique_ptr<AbstractFunction>> f = std::nullopt;
-    std::optional<Eigen::VectorXd> start;
+    std::optional<Eigen::VectorXd> start = Eigen::VectorXd::Zero(0);
     std::vector<std::unique_ptr<Criterion>> crits = {};
 public:
     template<typename T, typename ...Args>
@@ -38,7 +38,7 @@ public:
         start = v;
     }
 
-    bool configured() const {
+    [[nodiscard]] bool configured() const {
         return f && start && start && !crits.empty();
     }
 

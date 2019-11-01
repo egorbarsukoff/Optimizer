@@ -11,7 +11,10 @@
 #include "BoxDomain.h"
 
 //! @brief Класс абстрактной функции
-//! @tparam Размерность функции
+//! Точками кастомизации являются методы compute, compute_grad и compute_hess
+//! compute - сама функция, переопредлять обязательно
+//! compute_grad - градиент, если не переопределять, вычисляется численно
+//! compute_hess - матрица Гессе, если не переопределять, вычисляется численно
 class AbstractFunction {
 protected:
 
@@ -22,10 +25,34 @@ protected:
     //! \param x Точка
     //! \return Результат
     [[nodiscard]] virtual double compute(const Eigen::VectorXd &x) const = 0;
+
+    //! Вычесление градиента
+    //! Если не переопределена в наследнике, то вычисляется численно
+    //! \param x точка, в которой будет вычислен градиент
+    //! \return градиент функции
     [[nodiscard]] virtual Eigen::VectorXd compute_grad(const Eigen::VectorXd &x) const;
+
+    //! Вычесление матрицы Гессе
+    //! Если не переопределена в наследнике, то вычисляется численно
+    //! \param x точка, в которой будет вычислена матрицы
+    //! \return матрицы Гессе функции
     [[nodiscard]] virtual Eigen::MatrixXd compute_hess(const Eigen::VectorXd &x) const;
 
+    //! Численное вычисление матрицы Гессе
+    //! \param x Точка, в которой будет вычеслена матрица
+    //! \return матрица Гессе
     [[nodiscard]] Eigen::MatrixXd num_hess(const Eigen::VectorXd &x) const;
+
+    //! Численное вычисление градиента
+    //! \param x Точка, в которой будет вычеслен градиент
+    //! \return градиент функции
+    [[nodiscard]] Eigen::VectorXd num_grad(const Eigen::VectorXd &x) const;
+
+    //! Проверяет, что x лежит в области определении функции this и вызывает f(x) для данного f
+    //! \param f Функция, принимающая Eigen::VectorXd
+    //! \param x точка, в которой будет вычеслен f(x)
+    //! \return результат f(x)
+    //! \throws std::runtime_error("Out of bounds")
     template<typename T>
     decltype(auto) checkBoxAndCall(T &&f, const Eigen::VectorXd &x) const {
         if (domain.inDomain(x)) {
@@ -36,11 +63,15 @@ protected:
 
 public:
 
-    [[nodiscard]] Eigen::VectorXd num_grad(const Eigen::VectorXd &x) const;
+    //! Конструктор
+    //! \param domain область определения
     explicit AbstractFunction(BoxDomain domain);
+
     //! Возвращает область определения
     //! \return
     [[nodiscard]] const BoxDomain &getDomain() const;
+
+    void setDomain(BoxDomain domain);
 
     //! Вызов вычисления функции
     //! \param x Точка в которой вычисляется функция
@@ -48,16 +79,20 @@ public:
     double operator()(const Eigen::VectorXd &x) const;
 
     //! Вычисление градиента в точке $x$
+    //! Вычислится численно или аналитически в зависимотcи от того, переопределена ли compute_grad
     //! \param x Точка в которой вычисляется градиент
     //! \return Градиент
     [[nodiscard]] Eigen::VectorXd gradient(const Eigen::VectorXd &x) const;
 
     //! Вычисление матрицы Гессе в точке $x$
+    //! Вычислится численно или аналитически в зависимоcти от того, переопределена ли compute_hess
     //! \param x Точка в которой вычисляется градиент
     //! \return Гессиан
     [[nodiscard]] Eigen::MatrixXd hessian(const Eigen::VectorXd &x) const;
 };
 
+//! @brief Функция определенная любыми callable объектами
+//! Если не определены градиент/матрица Гессе, они вычисляются численно
 class Function : public AbstractFunction {
     std::function<double(const Eigen::VectorXd &)> f;
     std::optional<std::function<Eigen::VectorXd(const Eigen::VectorXd &)>> grad;
