@@ -8,10 +8,14 @@
 
 bool NewtonOptimizer::step() {
     auto &x = track.back().x;
-    if (-f->hessian(x).determinant() < 1e-2) {
-        throw std::runtime_error("Hessian determinant equal 0");
+    auto hess = f->hessian(x);
+    Eigen::VectorXd antigrad = -f->gradient(x);
+    Eigen::VectorXd p;
+    if (Eigen::FullPivLU<decltype(hess)>{hess}.rank() != f->getDomain().dim()) {
+        p = antigrad;
+    } else {
+        p = hess * antigrad;
     }
-    Eigen::VectorXd p = -f->hessian(x).inverse() * f->gradient(x);
     try {
         p *= f->getDomain().intersectCoeff(x, p);
     } catch (std::runtime_error &e) {
