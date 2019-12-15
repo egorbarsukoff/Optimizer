@@ -3,7 +3,7 @@
 #include <optim/NewtonOptimizer.h>
 #include "optim/Criterion.h"
 #include "optim/RandomSearch.h"
-#include "Functions.h"
+#include "optim/Functions.h"
 
 #include "optim/TaskBuilder.h"
 

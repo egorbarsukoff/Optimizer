@@ -2,7 +2,7 @@
 // Created by eb on 09.10.2019.
 //
 
-#include "Functions.h"
+#include "optim/Functions.h"
 
 double Rosenbrock::compute(const Eigen::VectorXd &x) const {
     return pow((1 - x[0]), 2) + 100 * pow((x[1] - pow(x[0], 2)), 2);
