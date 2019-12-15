@@ -5,11 +5,11 @@
 #include "optim/RandomSearch.h"
 #include "Functions.h"
 
-#include "optim/Task.h"
+#include "optim/TaskBuilder.h"
 
 int main(int argc, char *argv[]) {
     int fn;
-    Task task;
+    TaskBuilder task;
     std::cout << "Оптимизируемая функиця:\n"
                  "1 - Функция Розенброка\n"
                  "2 - x^2 + 3y^2 + 6z^2 + 2xy\n"

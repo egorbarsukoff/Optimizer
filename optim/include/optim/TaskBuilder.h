@@ -2,8 +2,8 @@
 // Created by eb on 09.10.2019.
 //
 
-#ifndef OPTIMIZER_OPTIM_INCLUDE_OPTIM_TASK_H
-#define OPTIMIZER_OPTIM_INCLUDE_OPTIM_TASK_H
+#ifndef OPTIMIZER_OPTIM_INCLUDE_OPTIM_TASKBUILDER_H
+#define OPTIMIZER_OPTIM_INCLUDE_OPTIM_TASKBUILDER_H
 
 #include <optional>
 #include <memory>
@@ -11,7 +11,7 @@
 #include "Optimizer.h"
 
 //! @brief Построение задачи оптимизации
-class Task {
+class TaskBuilder {
     std::optional<std::unique_ptr<AbstractFunction>> f = std::nullopt;
     std::optional<Eigen::VectorXd> start = Eigen::VectorXd::Zero(0);
     std::vector<std::unique_ptr<Criterion>> crits = {};
@@ -21,7 +21,7 @@ public:
     //! @tparam T - Класс оптимизируемой функции
     //! @param args - Аргументы конструкора фунции
     template<typename T, typename ...Args>
-    void set_f(Args &&... args) {
+    TaskBuilder &set_f(Args &&... args) {
         static_assert(std::is_base_of_v<AbstractFunction, T>, "T must derive from AbstractFunction");
         f = std::make_unique<T>(std::forward<Args>(args)...);
     }
@@ -30,7 +30,7 @@ public:
     //! @tparam T - Класс критрия
     //! @param args - Аругменты конструктора критрерия
     template<typename T, typename ...Args>
-    void add_crit(Args &&... args) {
+    TaskBuilder &add_crit(Args &&... args) {
         static_assert(std::is_base_of_v<Criterion, T>, "T must derive from Criterion");
         crits.push_back(std::make_unique<T>(std::forward<Args>(args)...));
     }
@@ -38,7 +38,7 @@ public:
     //! Установить начальную точку
     //! @param coords - координаты
     template<typename ...Args>
-    void set_start(Args... coords) {
+    TaskBuilder &set_start(Args... coords) {
         assert(f && (*f)->getDomain().dim() == sizeof...(Args));
         Eigen::VectorXd v(sizeof...(Args));
         std::vector<double> t{static_cast<double>(coords)...};
@@ -67,4 +67,4 @@ public:
     }
 };
 
-#endif //OPTIMIZER_OPTIM_INCLUDE_OPTIM_TASK_H
+#endif //OPTIMIZER_OPTIM_INCLUDE_OPTIM_TASKBUILDER_H
