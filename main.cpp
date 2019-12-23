@@ -82,12 +82,17 @@ int main(int argc, char *argv[]) {
     std::cin >> fn;
     Eigen::VectorXd x;
     double y;
-    if (fn == 1) {
-        std::tie(x, y) = task.start_and_reset<NewtonOptimizer>();
-    } else if (fn == 2) {
-        std::tie(x, y) = task.start_and_reset<RandomSearch>();
-    } else {
-        std::cout << "Ошибка ввода\n";
+    try {
+        if (fn == 1) {
+            std::tie(x, y) = task.start_and_reset<NewtonOptimizer>();
+        } else if (fn == 2) {
+            std::tie(x, y) = task.start_and_reset<RandomSearch>();
+        } else {
+            std::cout << "Ошибка ввода\n";
+            std::exit(0);
+        }
+    } catch (std::exception &e) {
+        std::cerr << e.what();
         std::exit(0);
     }
 
