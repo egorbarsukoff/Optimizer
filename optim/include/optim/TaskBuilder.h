@@ -24,6 +24,7 @@ public:
     TaskBuilder &set_f(Args &&... args) {
         static_assert(std::is_base_of_v<AbstractFunction, T>, "T must derive from AbstractFunction");
         f = std::make_unique<T>(std::forward<Args>(args)...);
+        return *this;
     }
 
     //! Добавить критерии остновки
@@ -33,6 +34,7 @@ public:
     TaskBuilder &add_crit(Args &&... args) {
         static_assert(std::is_base_of_v<Criterion, T>, "T must derive from Criterion");
         crits.push_back(std::make_unique<T>(std::forward<Args>(args)...));
+        return *this;
     }
 
     //! Установить начальную точку
@@ -46,6 +48,7 @@ public:
             v[i] = t[i];
         }
         start = v;
+        return *this;
     }
 
     //! Статус задачи
