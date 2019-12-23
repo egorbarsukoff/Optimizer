@@ -10,6 +10,8 @@
 #include <Eigen/Core>
 #include "BoxDomain.h"
 
+#include <iostream>
+
 //! @brief Класс абстрактной функции
 //! Точками кастомизации являются методы compute, compute_grad и compute_hess
 //! compute - сама функция, переопредлять обязательно
@@ -57,8 +59,10 @@ protected:
     decltype(auto) checkBoxAndCall(T &&f, const Eigen::VectorXd &x) const {
         if (domain.inDomain(x)) {
             return f(x);
-        } else
+        } else {
+            std::cerr << x;
             throw std::runtime_error("Out of bounds");
+        }
     }
 
 public:
@@ -112,7 +116,5 @@ public:
              std::function<Eigen::VectorXd(const Eigen::VectorXd &)> grad,
              std::function<Eigen::MatrixXd(const Eigen::VectorXd &)> hess);
 };
-
-
 
 #endif //OPTIMIZER_FUNCTION_H

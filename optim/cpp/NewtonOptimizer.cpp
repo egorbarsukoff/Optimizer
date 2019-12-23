@@ -8,13 +8,13 @@
 
 bool NewtonOptimizer::step() {
     auto &x = track.back().x;
-    auto hess = f->hessian(x);
-    Eigen::VectorXd antigrad = -f->gradient(x);
     Eigen::VectorXd p;
-    if (Eigen::FullPivLU<decltype(hess)>{hess}.rank() != f->getDomain().dim()) {
+    Eigen::VectorXd antigrad = -f->gradient(x);
+    Eigen::MatrixXd hess = f->hessian(x);
+    if (abs(hess.determinant()) < 1e-10) {
         p = antigrad;
     } else {
-        p = hess * antigrad;
+        p = hess.inverse() * antigrad;
     }
     try {
         p *= f->getDomain().intersectCoeff(x, p);

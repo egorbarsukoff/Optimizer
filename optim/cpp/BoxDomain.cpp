@@ -7,7 +7,7 @@
 
 BoxDomain::BoxDomain (std::vector<std::array<double, 2>> _bounds) : bounds(std::move(_bounds)) {
     for (const std::array<double, 2>& b: bounds) {
-        if (b[0] >= b[1])
+        if (b[0] >= b[1] - 1e-12)
             throw std::runtime_error("Bad bounds");
     }
 }
@@ -22,7 +22,7 @@ BoxDomain::BoxDomain(const Eigen::VectorXd &p, double eps) : bounds(p.size()) {
 bool BoxDomain::inDomain(const Eigen::VectorXd &p) const {
     assert(static_cast<size_t>(p.size()) == bounds.size());
     for (size_t i = 0; i < static_cast<size_t>(p.size()); ++i) {
-        if (bounds[i][0] > p[i] + 1e-9 || bounds[i][1] < p[i] - 1e-9)
+        if (bounds[i][0] > p[i] + 1e-8 || bounds[i][1] < p[i] - 1e-8)
             return false;
     }
     return true;
