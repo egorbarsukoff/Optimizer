@@ -13,6 +13,7 @@ BoxDomain::BoxDomain (std::vector<std::array<double, 2>> _bounds) : bounds(std::
 }
 
 BoxDomain::BoxDomain(const Eigen::VectorXd &p, double eps) : bounds(p.size()) {
+    eps = std::clamp<double>(eps, 1e-5, 1000000);
     for (size_t i = 0; i < static_cast<size_t>(p.size()); ++i) {
         bounds[i][0] = p[i] - eps;
         bounds[i][1] = p[i] + eps;
