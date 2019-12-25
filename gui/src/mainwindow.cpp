@@ -25,17 +25,21 @@ MainWindow::MainWindow(QWidget *parent)
 
     coord_label = new QLabel(this);
     statusBar()->addWidget(coord_label);
-    set_coord_label(0, 0);
+    set_coord_label(0, 0, 0);
 
     plot->plot_function(dialog_form->get_f());
     plot->show();
 
     connect(dialog_form, SIGNAL(change_function()), this, SLOT(change_f()));
     connect(plot, SIGNAL(clicked(double, double)), this, SLOT(optimize_from(double, double)));
+    connect(this, SIGNAL(optim_finished(
+                             const Track&)), dialog_form, SLOT(print_result(
+                                                                   const Track&)));
 }
 
-void MainWindow::set_coord_label(double x, double y) {
-    coord_label->setText("x: " + QString::number(x, 'f', 5) + " " + "y: " + QString::number(y, 'f', 5));
+void MainWindow::set_coord_label(double x, double y, double f) {
+    coord_label->setText("x: " + QString::number(x, 'f', 5) + " " + "y: " + QString::number(y, 'f', 5) +
+        " f(x, y) = " + QString::number(f, 'f', 5));
 }
 
 void MainWindow::optimize_from(double x, double y) {
@@ -44,8 +48,7 @@ void MainWindow::optimize_from(double x, double y) {
         Eigen::VectorXd v(2);
         v << x, y;
         auto track = opt->optimize(v);
-        std::cerr << track.back().x;
-
+        emit optim_finished(track);
     } catch (std::exception &e) {
         QMessageBox::critical(this, "Ошибка", e.what());
     }

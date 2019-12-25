@@ -9,6 +9,7 @@
 #include <QComboBox>
 #include <QCheckBox>
 #include <QLineEdit>
+#include <QLabel>
 
 #include "optim/Track.h"
 #include "optim/Function.h"
@@ -24,6 +25,8 @@ Q_OBJECT
     QLineEdit *x0, *x1, *y0, *y1, *h_rs, *p_rs;
     std::vector<std::pair<QCheckBox *, QLineEdit *>> crits;
 
+    QLabel *results;
+
     void add_crit_float_param(std::string_view name);
     void add_crit_int_param(std::string_view name);
     void add_crit(std::string_view name, QValidator *validator);
@@ -35,6 +38,9 @@ public:
 
 signals:
     void change_function();
+
+public slots:
+    void print_result(const Track &);
 };
 
 #endif //OPTIMIZER_GUI_INCLUDE_GUI_DIALOGFORM_H

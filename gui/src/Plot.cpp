@@ -9,7 +9,7 @@ Plot::Plot(QWidget *parent, QSize size) : QLabel(parent), heatmap{size, QImage::
     setMouseTracking(true);
     coord_label = new QLabel(this);
     coord_label->setFixedSize(200, 20);
-    connect(this, SIGNAL(mouseAt(double, double)), parent, SLOT(set_coord_label(double, double)));
+    connect(this, SIGNAL(mouseAt(double, double, double)), parent, SLOT(set_coord_label(double, double, double)));
 }
 
 void Plot::set_coord_label(double x, double y) {
@@ -64,7 +64,7 @@ std::pair<int, int> Plot::coord_transform(int x, int y) {
 void Plot::mouseMoveEvent(QMouseEvent *ev) {
     QLabel::mouseMoveEvent(ev);
     auto[x, y] = i2d(ev->x(), ev->y());
-    emit mouseAt(x, y);
+    emit mouseAt(x, y, 0);
 }
 
 void Plot::plot_path(const Track &track) {

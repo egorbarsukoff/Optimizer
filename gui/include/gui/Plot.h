@@ -33,7 +33,7 @@ public:
     void plot_path(const Track &track);
     ~Plot();
 signals:
-    void mouseAt(double, double);
+    void mouseAt(double, double, double);
     void clicked(double, double);
 };
 

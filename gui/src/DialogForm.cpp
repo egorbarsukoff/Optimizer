@@ -129,12 +129,8 @@ DialogForm::DialogForm(QWidget *parent) : QWidget(parent) {
     add_crit_int_param("Количество итераций \nбез обновления");
     add_crit_float_param("Изменение функции");
 
-    auto test_button = new QPushButton(this);
-    formlayout->addWidget(test_button);
-    connect(test_button, &QPushButton::clicked, this, [this](auto s) {
-        auto opt = get_optimizer();;
-        std::cerr << "!";
-    });
+    results = new QLabel(this);
+    formlayout->addWidget(results);
 }
 
 void DialogForm::add_crit_float_param(std::string_view name) {
@@ -230,4 +226,12 @@ std::unique_ptr<Optimizer> DialogForm::get_optimizer() const {
     } else {
         return std::make_unique<NewtonOptimizer>(get_f(), get_crit());
     }
+}
+void DialogForm::print_result(const Track &track) {
+    auto x = track.back().x;
+    size_t n = track.size() - 1;
+    results->setText(QString("Результаты оптимизации:\n") +
+        "x: " + QString::number(x[0], 'f', 5) + " y: " + QString::number(x[1], 'f', 5) + QString("\n") +
+        "f(x, y) = " + QString::number(track.back().y, 'f', 5) + QString("\n") +
+        "Количество итераций: " + QString::number(n));
 }

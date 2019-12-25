@@ -21,9 +21,12 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow() override;
 
+signals:
+    void optim_finished(const Track &);
+
 public slots:
     void optimize_from(double x, double y);
-    void set_coord_label(double x, double y);
+    void set_coord_label(double x, double y, double f);
     void change_f();
 private:
     Ui::MainWindow *ui;
