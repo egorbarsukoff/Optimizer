@@ -9,6 +9,7 @@
 #include "optim/Track.h"
 #include <QLabel>
 #include <QMouseEvent>
+#include <QPainter>
 
 class Plot : public QLabel {
 Q_OBJECT
@@ -20,17 +21,21 @@ Q_OBJECT
     [[nodiscard]] std::pair<double, double> i2d(int x, int y) const;
     [[nodiscard]] static QColor heat_color(double min, double max, double val);
     std::pair<int, int> coord_transform(int x, int y);
-
+    std::unique_ptr<AbstractFunction> f;
+    Track track = {};
+protected:
+    void paintEvent(QPaintEvent *event) override;
 private slots:
     void set_coord_label(double x, double y);
+    void print_track(const Track &);
+    void reprint();
 public:
 protected:
     void mouseMoveEvent(QMouseEvent *ev) override;
     void mouseReleaseEvent(QMouseEvent *ev) override;
 public:
     explicit Plot(QWidget *parent, QSize size);
-    void plot_function(std::unique_ptr<AbstractFunction> f);
-    void plot_path(const Track &track);
+    void plot_function(std::unique_ptr<AbstractFunction> f_);
     ~Plot();
 signals:
     void mouseAt(double, double, double);

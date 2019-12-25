@@ -35,6 +35,9 @@ MainWindow::MainWindow(QWidget *parent)
     connect(this, SIGNAL(optim_finished(
                              const Track&)), dialog_form, SLOT(print_result(
                                                                    const Track&)));
+    connect(this, SIGNAL(optim_finished(
+                             const Track&)), plot, SLOT(print_track(
+                                                            const Track&)));
 }
 
 void MainWindow::set_coord_label(double x, double y, double f) {

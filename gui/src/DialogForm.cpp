@@ -21,7 +21,9 @@ DialogForm::DialogForm(QWidget *parent) : QWidget(parent) {
     auto label1 = new QLabel("Функция");
     auto function_list = new QComboBox();
     function_list->addItem("Розенброк");
-    function_list->addItem("абц}");
+    function_list->addItem("x^2 + 0.1y^2");
+    function_list->addItem("sin 10x + cos 10y");
+
     function = function_list;
 
     auto border_box = new QGroupBox("Границы", this);
@@ -126,7 +128,17 @@ DialogForm::DialogForm(QWidget *parent) : QWidget(parent) {
     new QFormLayout(crit_box);
 
     add_crit_int_param("Количество итераций");
-    add_crit_int_param("Количество итераций \nбез обновления");
+    auto widget_pair = add_crit_int_param("Количество итераций \nбез обновления");
+    widget_pair.first->setDisabled(true);
+    widget_pair.second->setDisabled(true);
+    connect(method_list, &QComboBox::currentTextChanged, rs_params_group, [widget_pair](const auto &s) {
+        widget_pair.first->setDisabled(s == "Метод Ньютона");
+        if (s == "Метод Ньютона") {
+
+            widget_pair.first->setChecked(false);
+        }
+        widget_pair.second->setDisabled(s == "Метод Ньютона");
+    });
     add_crit_float_param("Изменение функции");
 
     results = new QLabel(this);
@@ -138,12 +150,12 @@ void DialogForm::add_crit_float_param(std::string_view name) {
     add_crit(name, double_validator);
 }
 
-void DialogForm::add_crit_int_param(std::string_view name) {
+std::pair<QCheckBox *, QLineEdit *> DialogForm::add_crit_int_param(std::string_view name) {
     auto int_validator = new QIntValidator(0, 1000000000, crit_box);
-    add_crit(name, int_validator);
+    return add_crit(name, int_validator);
 }
 
-void DialogForm::add_crit(std::string_view name, QValidator *validator) {
+std::pair<QCheckBox *, QLineEdit *> DialogForm::add_crit(std::string_view name, QValidator *validator) {
     auto critrow1 = new QHBoxLayout();
     auto checkbox1 = new QCheckBox(name.data(), crit_box);
     auto param1 = new QLineEdit(crit_box);
@@ -152,12 +164,12 @@ void DialogForm::add_crit(std::string_view name, QValidator *validator) {
     param1->setFixedSize(70, 30);
     param1->setDisabled(true);
     connect(checkbox1, &QCheckBox::stateChanged, param1, [param1](int state) { param1->setDisabled(!state); });
-
     critrow1->addWidget(checkbox1);
     critrow1->addWidget(param1);
     static_cast<QFormLayout *>(crit_box->layout())->addRow(critrow1);
 
     crits.emplace_back(checkbox1, param1);
+    return {checkbox1, param1};
 
 }
 
@@ -178,6 +190,16 @@ std::unique_ptr<AbstractFunction> DialogForm::get_f() const {
 
     if (function->currentText() == "Розенброк") {
         return std::make_unique<Rosenbrock>(*domain);
+    } else if (function->currentText() == "x^2 + 0.1y^2") {
+        return std::make_unique<Function>(*domain, [](const Eigen::VectorXd &v) {
+            assert (v.size() == 2);
+            return v[0] * v[0] + 0.1 * v[1] * v[1];
+        });
+    } else if (function->currentText() == "sin 10x + cos 10y") {
+        return std::make_unique<Function>(*domain, [](const Eigen::VectorXd &v) {
+            assert (v.size() == 2);
+            return sin(10 * v[0]) + cos(10 * v[1]);
+        });
     }
     assert(false);
 }
