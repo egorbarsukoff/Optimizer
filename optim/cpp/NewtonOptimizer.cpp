@@ -11,7 +11,7 @@ bool NewtonOptimizer::step() {
     Eigen::VectorXd p;
     Eigen::VectorXd antigrad = -f->gradient(x);
     Eigen::MatrixXd hess = f->hessian(x);
-    if (abs(hess.determinant()) < 1e-10) {
+    if (Eigen::FullPivLU<Eigen::MatrixXd>{hess}.rank() != f->getDomain().dim()) {
         p = antigrad;
     } else {
         p = hess.inverse() * antigrad;
