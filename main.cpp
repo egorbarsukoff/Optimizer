@@ -86,7 +86,10 @@ int main(int argc, char *argv[]) {
         if (fn == 1) {
             std::tie(x, y) = task.start_and_reset<NewtonOptimizer>();
         } else if (fn == 2) {
-            std::tie(x, y) = task.start_and_reset<RandomSearch>();
+            std::cout << "Введите параметр p: ";
+            double p;
+            std::cin >> p;
+            std::tie(x, y) = task.start_and_reset<RandomSearch>(0.1, p);
         } else {
             std::cout << "Ошибка ввода\n";
             std::exit(0);
