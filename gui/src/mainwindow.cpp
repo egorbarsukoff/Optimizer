@@ -9,8 +9,8 @@
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow) {
-    setFixedSize(1000, 700);
     setWindowTitle("Optimizer");
+    setFixedSize(1000, 700);
     ui->setupUi(this);
 
     auto mainWidget = new QWidget(this);

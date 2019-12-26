@@ -43,7 +43,7 @@ DialogForm::DialogForm(QWidget *parent) : QWidget(parent) {
     border_box_layout->addWidget(x1, 0, 3);
     border_box_layout->addWidget(new QLabel("y0:"), 1, 0);
     border_box_layout->addWidget(y0, 1, 1);
-    border_box_layout->addWidget(new QLabel("y0:"), 1, 2);
+    border_box_layout->addWidget(new QLabel("y1:"), 1, 2);
     border_box_layout->addWidget(y1, 1, 3);
 
     connect(function_list,
@@ -127,8 +127,9 @@ DialogForm::DialogForm(QWidget *parent) : QWidget(parent) {
     formlayout->addWidget(crit_box);
     new QFormLayout(crit_box);
 
-    add_crit_int_param("Количество итераций");
-    auto widget_pair = add_crit_int_param("Количество итераций \nбез обновления");
+    auto n = add_crit_int_param("Количество итераций", "50");
+    n.first->setChecked(true);
+    auto widget_pair = add_crit_int_param("Количество итераций \nбез обновления", "10000");
     widget_pair.first->setDisabled(true);
     widget_pair.second->setDisabled(true);
     connect(method_list, &QComboBox::currentTextChanged, rs_params_group, [widget_pair](const auto &s) {
@@ -139,30 +140,32 @@ DialogForm::DialogForm(QWidget *parent) : QWidget(parent) {
         }
         widget_pair.second->setDisabled(s == "Метод Ньютона");
     });
-    add_crit_float_param("Изменение функции");
+    add_crit_float_param("Изменение функции", "1e-5");
 
     results = new QLabel(this);
     formlayout->addWidget(results);
 }
 
-void DialogForm::add_crit_float_param(std::string_view name) {
+void DialogForm::add_crit_float_param(std::string_view name, const std::string &def) {
     auto double_validator = new QDoubleValidator(0, 100, 5, crit_box);
-    add_crit(name, double_validator);
+    add_crit(name, double_validator, def);
 }
 
-std::pair<QCheckBox *, QLineEdit *> DialogForm::add_crit_int_param(std::string_view name) {
+std::pair<QCheckBox *, QLineEdit *> DialogForm::add_crit_int_param(std::string_view name, const std::string &def) {
     auto int_validator = new QIntValidator(0, 1000000000, crit_box);
-    return add_crit(name, int_validator);
+    return add_crit(name, int_validator, def);
 }
 
-std::pair<QCheckBox *, QLineEdit *> DialogForm::add_crit(std::string_view name, QValidator *validator) {
+std::pair<QCheckBox *, QLineEdit *> DialogForm::add_crit(std::string_view name,
+                                                         QValidator *validator,
+                                                         const std::string &def) {
     auto critrow1 = new QHBoxLayout();
     auto checkbox1 = new QCheckBox(name.data(), crit_box);
     auto param1 = new QLineEdit(crit_box);
     param1->setValidator(validator);
-    param1->setPlaceholderText("Параметр");
     param1->setFixedSize(70, 30);
     param1->setDisabled(true);
+    param1->setText(QString::fromStdString(def));
     connect(checkbox1, &QCheckBox::stateChanged, param1, [param1](int state) { param1->setDisabled(!state); });
     critrow1->addWidget(checkbox1);
     critrow1->addWidget(param1);

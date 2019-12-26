@@ -27,9 +27,11 @@ Q_OBJECT
 
     QLabel *results;
 
-    void add_crit_float_param(std::string_view name);
-    std::pair<QCheckBox *, QLineEdit *> add_crit_int_param(std::string_view name);
-    std::pair<QCheckBox *, QLineEdit *> add_crit(std::string_view name, QValidator *validator);
+    void add_crit_float_param(std::string_view name, const std::string &def);
+    std::pair<QCheckBox *, QLineEdit *> add_crit_int_param(std::string_view name, const std::string &def);
+    std::pair<QCheckBox *, QLineEdit *> add_crit(std::string_view name,
+                                                 QValidator *validator,
+                                                 const std::string &def);
 public:
     explicit DialogForm(QWidget *parent);
     [[nodiscard]] std::unique_ptr<AbstractFunction> get_f() const;

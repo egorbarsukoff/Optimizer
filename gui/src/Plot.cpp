@@ -99,6 +99,9 @@ void Plot::paintEvent(QPaintEvent *event) {
             auto[x2, y2] = d2i(track[i + 1].x[0], track[i + 1].x[1]);
             painter.drawLine(x1, y1, x2, y2);
         }
+        auto[x, y] = d2i(track.back().x[0], track.back().x[1]);
+        painter.setBrush(Qt::black);
+        painter.drawEllipse(x - 3, y - 3, 6, 6);
 
     }
 
